@@ -1,4 +1,4 @@
-import { Route, Router, Routes } from "react-router-dom";
+import {BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 import IndexPage from "./pages/IndexPage";
 import LoginPage from "./pages/Login";
@@ -17,6 +17,7 @@ axios.defaults.withCredentials = true;
 function App() {
   return (
     <UserContextProvider>
+      <Router>
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<IndexPage />} />
@@ -29,6 +30,7 @@ function App() {
             <Route path="/place/:id" element={<PlacePage />} />
           </Route>
         </Routes>
+        </Router>
     </UserContextProvider>
   );
 }

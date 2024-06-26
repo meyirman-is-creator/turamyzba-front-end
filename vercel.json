@@ -4,6 +4,9 @@
     { "src": "package.json", "use": "@vercel/static-build", "config": { "distDir": "build" } }
   ],
   "rewrites": [
-    { "routes": [{ "src": "/[^.]+", "dest": "/", "status": 200 }] }
-]
+    {
+      "source": "/(.*)",
+      "destination": "/"
+    }
+  ]
 }
