@@ -10,7 +10,9 @@ import { UserContextProvider } from "./UserContext";
 import PlacesPage from "./pages/PlacesPage";
 import PlacesFormPage from "./pages/PlacesFormPage";
 import PlacePage from "./pages/PlacePage";
-axios.defaults.baseURL = "https://airbnb-clone-back-end-production.up.railway.app";
+// axios.defaults.baseURL = "https://airbnb-clone-back-end-production.up.railway.app";
+axios.defaults.baseURL = "https://airbnb-clone-back-end.onrender.com";
+
 axios.defaults.withCredentials = true;
 
 function App() {
