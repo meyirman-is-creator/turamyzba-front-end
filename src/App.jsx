@@ -11,13 +11,12 @@ import PlacesPage from "./pages/PlacesPage";
 import PlacesFormPage from "./pages/PlacesFormPage";
 import PlacePage from "./pages/PlacePage";
 axios.defaults.baseURL =
-  "https://airbnb-clone-back-end-production.up.railway.app";
+  "http://localhost:4000";
 axios.defaults.withCredentials = true;
 
 function App() {
   return (
     <UserContextProvider>
-      <Router>
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<IndexPage />} />
@@ -30,7 +29,6 @@ function App() {
             <Route path="/place/:id" element={<PlacePage />} />
           </Route>
         </Routes>
-      </Router>
     </UserContextProvider>
   );
 }
