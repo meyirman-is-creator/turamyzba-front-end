@@ -6,7 +6,12 @@ import axios from "axios";
 export default function PlacesPage() {
   const [places, setPlaces] = useState([]);
   useEffect(() => {
-    axios.get("/user-places").then(({ data }) => {
+    const accessToken = localStorage.getItem('accessToken');
+    axios.get("/user-places", {
+      headers:{
+        Authorization:`Bearer ${accessToken}`
+      }
+    }).then(({ data }) => {
       setPlaces(data);
     });
   }, []);

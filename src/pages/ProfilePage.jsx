@@ -12,6 +12,7 @@ export default function AccountPage() {
     await axios.post("/logout");
     setUser(null);
     setRedirect("/");
+    localStorage.removeItem('accessToken');
   }
   if (!ready) {
     return "Loading...";
