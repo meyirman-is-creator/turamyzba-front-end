@@ -1,37 +1,83 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import Header from '../components/Header';
+import Map from '../components/Map';
 
 export default function IndexPage() {
-  const [places, setPlaces] = useState([]);
+  const [roommates, setRoommates] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [searchResults, setSearchResults] = useState([]);
+
   useEffect(() => {
-    axios.get("/places").then((response) => {
-      setPlaces([
-        ...response.data,
-      ]);
+    axios.get('/findroommates').then((response) => {
+      if (response.data && response.data.data) {
+        setRoommates(response.data.data);
+      } else {
+        setRoommates([]);
+      }
+      setLoading(false);
+    }).catch((error) => {
+      console.error('Error fetching roommate listings:', error);
+      setRoommates([]);
+      setLoading(false);
     });
   }, []);
+
+  useEffect(() => {
+    if (searchResults.length > 0) {
+      setRoommates(searchResults);
+    }
+  }, [searchResults]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  const points = roommates.map(roommate => ({
+    coordinates: roommate.address.coordinates,
+    title: roommate.title,
+  }));
+
   return (
-    <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-8 md:grid-cols-3 lg:grid-cols-6">
-      {places.length > 0 &&
-        places.map((place) => (
-          <Link to={'/place/'+place._id} >
-            <div className="bg-gray-500 mb-2 rounded-2xl">
-              {place.photos?.[0] && (
-                <img
-                  className="rounded-2xl object-cover aspect-square"
-                  src={place.photos?.[0]}
-                  alt=""
-                />
-              )}
-            </div>
-            <h3 className="font-bold leading-4">{place.address}</h3>
-            <h2 className="text-sm leading-4 text-gray-500">{place.title}</h2>
-            <div className="mt-2">
-              <span className="font-bold">${place.price}</span> per nights
-            </div>
-          </Link>
-        ))}
+    <div className="mt-8 px-4">
+      <Header setSearchResults={setSearchResults} />
+      <Map points={points} />
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+        {roommates.length > 0 &&
+          roommates.map((roommate) => (
+            <Link
+              key={roommate._id}
+              to={'/roommate/' + roommate._id}
+              className="block p-4 border rounded-lg hover:shadow-lg transition-shadow duration-200"
+            >
+              <div className="flex items-center space-x-4">
+                <div className="w-20 h-20 bg-gray-300 rounded-full flex-shrink-0">
+                  {roommate.photos?.[0] && (
+                    <img
+                      className="w-full h-full object-cover rounded-full"
+                      src={roommate.photos[0]}
+                      alt="Roommate"
+                    />
+                  )}
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-bold text-lg">{roommate.title}</h3>
+                  <p className="text-gray-500">{roommate.address.address}</p>
+                  <p className="text-gray-500">
+                    {roommate.monthlyExpensePerPerson} тг
+                  </p>
+                </div>
+              </div>
+              <div className="mt-4">
+                <p className="text-gray-700">{roommate.roomiePreferences}</p>
+                <p className="text-gray-500 text-sm">
+                  {new Date(roommate.moveInStart).toLocaleDateString()}
+                </p>
+              </div>
+            </Link>
+          ))}
+      </div>
     </div>
   );
 }

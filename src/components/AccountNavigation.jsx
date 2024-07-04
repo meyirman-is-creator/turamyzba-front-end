@@ -15,7 +15,7 @@ export default function AccountNavigation() {
     if (type === subpage) {
       classes += " bg-primary text-white";
     } else {
-      classes += " bg-gray-200";
+      classes += " bg-yellow-300";
     }
     return classes;
   }
@@ -55,7 +55,7 @@ export default function AccountNavigation() {
         </svg>
         My booking
       </Link> */}
-      <Link className={linkClasses("places")} to={"/account/places"}>
+      <Link className={linkClasses("findroommate")} to={"/account/findroommate"}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

@@ -19,3 +19,30 @@ button.primary {
   background-color: #f5385d;
   @apply bg-primary p-2 w-full text-white rounded-2xl;
 }
+.map-container {
+  position: relative;
+  height: 500px;
+  width: 100%;
+}
+.map-container {
+  position: relative;
+  height: 500px;
+  width: 100%;
+}
+
+.cluster-marker {
+  background-color: rgba(0, 150, 255, 0.6);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.point-marker img {
+  width: 20px;
+  height: 20px;
+}

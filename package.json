@@ -11,10 +11,14 @@
     "start": "vite preview --host"
   },
   "dependencies": {
+    "@2gis/mapgl": "^1.48.0",
+    "@mapbox/mapbox-gl-geocoder": "^5.0.2",
     "axios": "^1.7.2",
+    "mapbox-gl": "^3.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.23.1"
+    "react-router-dom": "^6.23.1",
+    "supercluster": "^8.0.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
