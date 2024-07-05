@@ -2,10 +2,11 @@ import React, { useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import supercluster from 'supercluster';
-import { map_api_key } from '../../api_key';
-mapboxgl.accessToken = map_api_key;
+import config from '../config';
 
-const Map = ({ points }) => {
+const Map = ({ points,}) => {
+  mapboxgl.accessToken = config.VITE_MAP_API_KEY
+  
   const mapContainer = useRef(null);
   const map = useRef(null);
   const markers = useRef([]);
