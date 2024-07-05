@@ -21,9 +21,9 @@ export default function Header({ setSearchResults }) {
       console.log(response)
       console.log(response.data)
 
-      if (response.data) {
+      if (response.data && response.data.suitable_announcements) {
         
-        setSearchResults(response.data);
+        setSearchResults(response.data.suitable_announcements);
         
       } else {
         setSearchResults([]);
