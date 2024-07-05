@@ -18,9 +18,13 @@ export default function Header({ setSearchResults }) {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`
         }
       });
-      if (response.data && response.data.suitableAnnouncements) {
+      console.log(response)
+      console.log(response.data)
+
+      if (response.data) {
         
-        setSearchResults(response.data.suitableAnnouncements);
+        setSearchResults(response.data);
+        
       } else {
         setSearchResults([]);
       }

@@ -4,8 +4,8 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import supercluster from 'supercluster';
 import config from '../config';
 
-const Map = ({ points,}) => {
-  mapboxgl.accessToken = config.VITE_MAP_API_KEY
+const Map = ({ points }) => {
+  mapboxgl.accessToken = config.VITE_MAP_API_KEY;
   
   const mapContainer = useRef(null);
   const map = useRef(null);
@@ -57,7 +57,7 @@ const Map = ({ points,}) => {
         } else {
           markerElement = document.createElement('div');
           markerElement.className = 'point-marker';
-          markerElement.innerHTML = `<img src="path_to_marker_icon" alt="${cluster.properties.title}" />`;
+          markerElement.innerHTML = `<img src="/geolocation_icon.svg" alt="${cluster.properties.title}" style="width: 20px; height: 20px;" />`;
         }
 
         const marker = new mapboxgl.Marker({ element: markerElement })
@@ -76,7 +76,7 @@ const Map = ({ points,}) => {
           properties: { title: point.title },
           geometry: {
             type: 'Point',
-            coordinates: [point.coordinates[1], point.coordinates[0]],
+            coordinates: [point.coordinates[0], point.coordinates[1]],
           },
         }))
       );

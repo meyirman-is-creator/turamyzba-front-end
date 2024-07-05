@@ -25,9 +25,10 @@ export default function IndexPage() {
   }, []);
 
   useEffect(() => {
+
     if (searchResults.length > 0) {
       setRoommates(searchResults);
-    }
+    }console.log(roommates)
   }, [searchResults]);
 
   if (loading) {

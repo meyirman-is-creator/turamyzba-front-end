@@ -113,7 +113,7 @@ export default function FindRoommateFormPage() {
   }
 
   if (redirect) {
-    return <Navigate to="/account/roommates" />;
+    return <Navigate to="/account/findroommates" />;
   }
 
   return (
