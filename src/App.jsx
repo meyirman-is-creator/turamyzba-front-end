@@ -10,8 +10,8 @@ import { UserContextProvider } from "./UserContext";
 import PlacesPage from "./pages/PlacesPage";
 import PlacePage from "./pages/PlacePage";
 import FindRoommateFormPage from "./pages/FindRoommateFormPage";
-axios.defaults.baseURL = "https://turamyzba-back-end-production.up.railway.app";
-// axios.defaults.baseURL = "http://localhost:4000";
+// axios.defaults.baseURL = "https://turamyzba-back-end-production.up.railway.app";
+axios.defaults.baseURL = "http://localhost:4000";
 axios.defaults.withCredentials = true;
 function App() {
   return (
