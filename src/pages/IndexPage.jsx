@@ -48,7 +48,7 @@ export default function IndexPage() {
           roommates.map((roommate) => (
             <Link
               key={roommate._id}
-              to={'/roommate/' + roommate._id}
+              to={'/findroommate/' + roommate._id}
               className="block p-4 border rounded-lg hover:shadow-lg transition-shadow duration-200"
             >
               <div className="flex items-center space-x-4">
