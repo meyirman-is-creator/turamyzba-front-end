@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import IndexPage from "./pages/IndexPage";
+import FindRoommateMainPage from "./pages/FindRoommateMainPage";
 import LoginPage from "./pages/Login";
 import Layout from "./Layout";
 import RegisterPage from "./pages/Register";
@@ -18,7 +18,7 @@ function App() {
     <UserContextProvider>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<IndexPage/>} />
+          <Route index element={<FindRoommateMainPage/>} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/account" element={<AccountPage />} />

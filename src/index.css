@@ -1,23 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-input[type="text"],
-input[type="password"],
-input[type="email"],
-input[type='number'],
-textarea {
-  @apply w-full border my-1 py-2 px-3 rounded-2xl;
-}
-textarea{
-  height: 140px;
 
-}
-button {
-  @apply bg-gray-300;
-}
-button.primary {
-  background-color: #f5385d;
-  @apply bg-primary p-2 w-full text-white rounded-2xl;
+body{
+  font-family: "Montserrat", sans-serif;
+  background: #D9D9D9;
 }
 .map-container {
   position: relative;
@@ -45,4 +32,56 @@ button.primary {
 .point-marker img {
   width: 20px;
   height: 20px;
+}
+/* RoommateCard.css */
+.slick-dots li button:before {
+  font-size: 10px;
+  color: white;
+  opacity: 1;
+}
+
+.slick-dots li.slick-active button:before {
+  color: black;
+  opacity: 1;
+}
+
+.slick-dots li.slick-active .custom-dot {
+  background-color: black;
+}
+.custom-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border-radius: 50%;
+  padding: 2px;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.custom-arrow-next {
+  right: 5px;
+}
+
+.custom-arrow-prev {
+  left: 5px;
+}
+
+.custom-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: white;
+  display: inline-block;
+  margin: 0 1px;
+}
+
+.slick-dots li.slick-active .custom-dot {
+  background-color: black;
+}
+.slick-dots li{
+  width: 5px;
+  height: 5px;
+  margin: 0 3px;
 }
