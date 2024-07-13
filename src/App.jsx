@@ -8,7 +8,7 @@ import AccountPage from "./pages/ProfilePage";
 import axios from "axios";
 import { UserContextProvider } from "./UserContext";
 import PlacesPage from "./pages/PlacesPage";
-import PlacePage from "./pages/PlacePage";
+import FindRoommateDetailPage from "./pages/FindRoommateDetailPage";
 import FindRoommateFormPage from "./pages/FindRoommateFormPage";
 // axios.defaults.baseURL = "https://turamyzba-back-end-production.up.railway.app";
 axios.defaults.baseURL = "http://localhost:4000";
@@ -25,7 +25,7 @@ function App() {
           <Route path="/account/findroommate" element={<PlacesPage/>}/>
           <Route path="/account/findroommate/new" element={<FindRoommateFormPage/>}/>
           <Route path="/account/findroommate/:id" element={<FindRoommateFormPage/>}/>
-          <Route path="/findroommate/:id" element={<PlacePage/>}/>
+          <Route path="/findroommate/:id" element={<FindRoommateDetailPage/>}/>
         </Route>
       </Routes>
     </UserContextProvider>

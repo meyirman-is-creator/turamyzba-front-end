@@ -85,3 +85,9 @@ body{
   height: 5px;
   margin: 0 3px;
 }
+.mapboxgl-ctrl{
+  display: none;
+}
+.mapboxgl-ctrl .mapboxgl-ctrl-logo{
+  display: none
+}

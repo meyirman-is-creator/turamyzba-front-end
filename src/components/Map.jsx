@@ -1,8 +1,10 @@
 import React, { useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import supercluster from 'supercluster';
 import config from '../config';
+import RoommateCard from './FindRoommate';
 
 const Map = ({ points }) => {
   mapboxgl.accessToken = config.VITE_MAP_API_KEY;
@@ -10,6 +12,7 @@ const Map = ({ points }) => {
   const mapContainer = useRef(null);
   const map = useRef(null);
   const markers = useRef([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (map.current) return; // initialize map only once
@@ -57,12 +60,17 @@ const Map = ({ points }) => {
         } else {
           markerElement = document.createElement('div');
           markerElement.className = 'point-marker';
-          markerElement.innerHTML = `<img src="/geolocation_icon.svg" alt="${cluster.properties.title}" style="width: 20px; height: 20px;" />`;
+          markerElement.innerHTML = `<div style="background: rgba(100, 150, 200); color: white; padding: 5px 10px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);">${cluster.properties.price}тг</div>`;
+          // markerElement.addEventListener('click', () => {
+          //   navigate(`/findroommate/${cluster.properties.id}`);
+          // });
+          markerElement.addEventListener('click', () => (
+            <RoommateCard/>
+      ));
         }
 
         const marker = new mapboxgl.Marker({ element: markerElement })
           .setLngLat([longitude, latitude])
-          .setPopup(new mapboxgl.Popup({ offset: 25 }).setText(cluster.properties.title))
           .addTo(map.current);
 
         markers.current.push(marker);
@@ -73,7 +81,7 @@ const Map = ({ points }) => {
       cluster.load(
         points.map(point => ({
           type: 'Feature',
-          properties: { title: point.title },
+          properties: { title: point.title, id: point.id, price: point.price },
           geometry: {
             type: 'Point',
             coordinates: [point.coordinates[0], point.coordinates[1]],
@@ -85,9 +93,9 @@ const Map = ({ points }) => {
 
     map.current.on('move', updateMarkers);
     map.current.on('zoom', updateMarkers);
-  }, [points]);
+  }, [points, navigate]);
 
-  return <div ref={mapContainer} className="map-container" style={{ width: '100%', height: '500px' }} />;
+  return <div ref={mapContainer} className="map-container rounded-[5px]" style={{ width: '100%', height: '700px' }} />;
 };
 
 export default Map;
