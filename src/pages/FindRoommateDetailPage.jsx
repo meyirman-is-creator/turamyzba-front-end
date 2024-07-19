@@ -1,8 +1,11 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import Header from "../components/Header";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import mapIcon from "../assets/locationIcon.svg";
+import Header from "../components/Header";
+
 export default function FindRoommateDetailPage() {
   const { id } = useParams();
   const [place, setPlace] = useState(null);
@@ -16,7 +19,57 @@ export default function FindRoommateDetailPage() {
     });
   }, [id]);
 
-  if (!place) return "";
+  if (!place) {
+    return (
+      <>
+        <Header />
+        <div className="max-w-[1200px] p-[20px] mx-[auto]">
+          <div className="flex justify-between gap-[20px] relative">
+            <Skeleton height={570} width={570} />
+            <div className="space-y-[20px]">
+              <div className="flex gap-[20px]">
+                <Skeleton height={275} width={275} />
+                <Skeleton height={275} width={275} />
+              </div>
+              <div className="flex gap-[20px]">
+                <Skeleton height={275} width={275} />
+                <Skeleton height={275} width={275} />
+              </div>
+            </div>
+          </div>
+          <div className="mt-[50px] flex justify-between items-start">
+            <div className="max-w-[750px]">
+              <Skeleton height={40} width={"100%"} />
+              <Skeleton height={20} width={"100%"} />
+              <div className="my-[40px]">
+                <Skeleton height={30} width={"100%"} />
+                <Skeleton height={20} width={"100%"} count={3} />
+              </div>
+              <div className="mb-[40px]">
+                <Skeleton height={30} width={"100%"} />
+                <Skeleton height={20} width={"100%"} count={3} />
+              </div>
+              <div className="mb-[40px]">
+                <Skeleton height={30} width={"100%"} />
+                <Skeleton height={20} width={"100%"} count={3} />
+              </div>
+            </div>
+            <div className="w-[380px] p-[20px] pt-[36px] bg-white rounded-[5px]">
+              <Skeleton height={30} width={"100%"} />
+              <Skeleton height={1} width={"100%"} />
+              <Skeleton height={20} width={"100%"} />
+              <Skeleton height={20} width={"100%"} />
+              <Skeleton height={20} width={"100%"} />
+              <div className="mt-[80px] w-full">
+                <Skeleton height={60} width={"100%"} />
+                <Skeleton height={60} width={"100%"} />
+              </div>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
 
   if (showAllPhotos) {
     return (
@@ -78,13 +131,13 @@ export default function FindRoommateDetailPage() {
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
-                  stroke-width="1.5"
+                  strokeWidth="1.5"
                   stroke="currentColor"
-                  class="size-[70px]"
+                  className="size-[70px]"
                 >
                   <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                     d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
                   />
                 </svg>

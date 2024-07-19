@@ -2,9 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-body{
+body {
   font-family: "Montserrat", sans-serif;
-  background: #D9D9D9;
+  background: #d9d9d9;
 }
 .map-container {
   position: relative;
@@ -80,14 +80,33 @@ body{
 .slick-dots li.slick-active .custom-dot {
   background-color: black;
 }
-.slick-dots li{
+.slick-dots li {
   width: 5px;
   height: 5px;
   margin: 0 3px;
 }
-.mapboxgl-ctrl{
+.mapboxgl-ctrl {
   display: none;
 }
-.mapboxgl-ctrl .mapboxgl-ctrl-logo{
-  display: none
+.mapboxgl-ctrl .mapboxgl-ctrl-logo {
+  display: none;
+}
+.IduNaPodseleniya {
+  transition: all .3s;
+}
+.IduNaPodseleniya:hover {
+  color: black;
+  border: 1px solid black;
+}
+.IduNaPodseleniya:hover .searchIconIduNa {
+  fill: black;
+}
+.IduNaPodseleniya:hover .searchIconIduNa{
+  transition: all .3s;
+  fill: black;
+
+}
+.PhoneInputInput{
+  background-color: #d9d9d9;
+  outline: none;
 }

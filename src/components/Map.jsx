@@ -1,10 +1,12 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import supercluster from 'supercluster';
 import config from '../config';
 import RoommateCard from './FindRoommate';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 const Map = ({ points }) => {
   mapboxgl.accessToken = config.VITE_MAP_API_KEY;
@@ -13,7 +15,7 @@ const Map = ({ points }) => {
   const map = useRef(null);
   const markers = useRef([]);
   const navigate = useNavigate();
-
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     if (map.current) return; // initialize map only once
 
@@ -89,12 +91,15 @@ const Map = ({ points }) => {
         }))
       );
       updateMarkers();
+      setLoading(false);
     });
 
     map.current.on('move', updateMarkers);
     map.current.on('zoom', updateMarkers);
   }, [points, navigate]);
-
+  if(loading){
+    return (<Skeleton height={700} width='100%'/>)
+  }
   return <div ref={mapContainer} className="map-container rounded-[5px]" style={{ width: '100%', height: '700px' }} />;
 };
 
