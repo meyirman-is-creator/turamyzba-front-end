@@ -5,21 +5,63 @@ import { Link, Navigate, useParams } from "react-router-dom";
 import PlacesPage from "./PlacesPage";
 import AccountNavigation from "../components/AccountNavigation";
 import Header from "../components/Header";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 export default function AccountPage() {
   const [redirect, setRedirect] = useState(null);
   const { ready, user, setUser } = useContext(UserContext);
   let { subpage } = useParams();
-  
+
   async function logout() {
     await axios.post("/logout");
     setUser(null);
     setRedirect("/");
-    localStorage.removeItem('accessToken');
+    localStorage.removeItem("accessToken");
   }
 
   if (!ready) {
-    return "Loading...";
+    return (
+      <>
+        <Header />
+        <div className="mt-[100px] pb-[50px] flex items-center justify-center">
+          <div className="max-w-3xl w-full bg-white rounded-lg shadow-md p-8">
+            <div className="flex flex-col items-center ">
+              <Skeleton
+                circle={true}
+                height={100}
+                width={100}
+                className="mb-4 mx-[auto]"
+              />
+              <Skeleton height={30} width={200} className="mx-[auto] mb-4" />
+              <Skeleton height={20} width={250} className="mb-4 mx-[auto]" />
+            </div>
+            
+            <div className="flex flex-col md:flex-row md:space-x-4 w-full">
+              <Skeleton height={40} width="100%" className="mb-4" />
+              <Skeleton height={40} width="100%" className="mb-4" />
+            </div>
+            <Skeleton height={30} width={200} className="mb-4" />
+            <Skeleton height={40} width="100%" className="mb-4" />
+            <div className="flex flex-row w-full space-x-4">
+              <Skeleton height={40} width="100%" />
+              <Skeleton height={40} width="100%" />
+            </div>
+            <hr className="my-6" />
+            <Skeleton height={30} width={200} className="mb-4" />
+            <div className="flex flex-col md:flex-row md:space-x-4 w-full">
+              <Skeleton height={40} width="100%" className="mb-4" />
+              <Skeleton height={40} width="100%" className="mb-4" />
+            </div>
+            <Skeleton height={40} width="100%" className="mb-4" />
+            <div className="flex flex-col w-full space-y-4">
+              <Skeleton height={40} width="100%" />
+              <Skeleton height={40} width="100%" />
+            </div>
+          </div>
+        </div>
+      </>
+    );
   }
 
   if (ready && !user && !redirect) {
@@ -35,11 +77,11 @@ export default function AccountPage() {
   }
 
   return (
-    <div className="bg-[#F3F4F6] min-h-screen">
+    <div className="pb-[50px]">
       <Header />
       <AccountNavigation />
       {subpage === "profile" && (
-        <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-md p-8 mt-8">
+        <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-md p-8 my-8">
           <div className="flex flex-col items-center">
             <img
               src="https://via.placeholder.com/150"
@@ -75,8 +117,12 @@ export default function AccountPage() {
               />
             </div>
             <div className="flex flex-row w-full space-x-4">
-              <button className="bg-yellow-400 text-black px-4 py-2 rounded w-full">Сохранить</button>
-              <button className="bg-black text-white px-4 py-2 rounded w-full">Редактировать</button>
+              <button className="bg-[#FFE500] text-black px-4 py-2 rounded w-full">
+                Сохранить
+              </button>
+              <button className="bg-black text-white px-4 py-2 rounded w-full">
+                Редактировать
+              </button>
             </div>
           </div>
           <hr className="my-6" />
@@ -91,7 +137,9 @@ export default function AccountPage() {
                 />
               </div>
               <div className="flex flex-col w-full">
-                <label className="text-left font-semibold">Confirm password</label>
+                <label className="text-left font-semibold">
+                  Confirm password
+                </label>
                 <input
                   type="password"
                   className="p-2 border rounded mb-4 w-full"
@@ -106,8 +154,12 @@ export default function AccountPage() {
               />
             </div>
             <div className="flex flex-row w-full space-x-4">
-              <button className="bg-yellow-400 text-black px-4 py-2 rounded w-full">Сохранить</button>
-              <button className="bg-black text-white px-4 py-2 rounded w-full">Изменить пароль</button>
+              <button className="bg-[#FFE500] text-black px-4 py-2 rounded w-full">
+                Сохранить
+              </button>
+              <button className="bg-black text-white px-4 py-2 rounded w-full">
+                Изменить пароль
+              </button>
             </div>
           </div>
         </div>

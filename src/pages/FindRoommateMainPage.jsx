@@ -1,5 +1,5 @@
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import Map from "../components/Map";
@@ -102,14 +102,8 @@ export default function FindRoommateMainPage() {
             ))}
         </div>
       ) : (
-        <div className="max-w-[1200px] p-[20px] mx-auto flex items-start">
-          <div className="max-h-[700px] overflow-scroll w-[400px] space-y-[20px]">
-            {roommates.length > 0 &&
-              roommates.map((roommate) => (
-                <RoommateCard key={roommate._id} roommate={roommate} />
-              ))}
-          </div>
-          <Map points={points} />
+        <div style={{ height: '100vh' }}>
+          <Map roommates={roommates} />
         </div>
       )}
       {!loading && (

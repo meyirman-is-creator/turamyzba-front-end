@@ -256,7 +256,7 @@ export default function FindRoommateDetailPage() {
 
           <div className="w-[380px] p-[20px] pt-[36px] bg-white rounded-[5px]">
             <p className="text-[30px] font-semibold">
-              {place?.monthlyExpensePerPerson}
+              {place?.monthlyExpensePerPerson}тг
             </p>
             <div className="h-[1px] w-full bg-[#565656] my-[14px]"></div>
             {place.moveInStart && (

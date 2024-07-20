@@ -1,74 +1,84 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import mapboxgl from 'mapbox-gl';
-import 'mapbox-gl/dist/mapbox-gl.css';
-import supercluster from 'supercluster';
-import config from '../config';
-import RoommateCard from './FindRoommate';
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
+import React, { useEffect, useRef, useState } from "react";
+import mapboxgl from "mapbox-gl";
+import "mapbox-gl/dist/mapbox-gl.css";
+import supercluster from "supercluster";
+import config from "../config";
+import RoommateCard from "./FindRoommate";
 
-const Map = ({ points }) => {
+const Map = ({ roommates }) => {
   mapboxgl.accessToken = config.VITE_MAP_API_KEY;
-  
+
   const mapContainer = useRef(null);
   const map = useRef(null);
   const markers = useRef([]);
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
+  const [selectedRoommates, setSelectedRoommates] = useState([]);
+  const [selectedRoommate, setSelectedRoommate] = useState(null);
+  const cluster = useRef(
+    new supercluster({
+      radius: 60,
+      maxZoom: 16,
+    })
+  );
+
   useEffect(() => {
-    if (map.current) return; // initialize map only once
+    if (map.current || !mapContainer.current) return; // Wait for the map container to be defined
 
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/streets-v11',
+      style: "mapbox://styles/mapbox/streets-v11",
       center: [76.9285, 43.2567], // center map on Almaty
       zoom: 10,
-    });
-
-    const cluster = new supercluster({
-      radius: 60,
-      maxZoom: 16,
     });
 
     const updateMarkers = () => {
       const zoom = map.current.getZoom();
       const bounds = map.current.getBounds().toArray().flat();
 
-      const clusters = cluster.getClusters(bounds, Math.round(zoom));
+      const clusters = cluster.current.getClusters(bounds, Math.round(zoom));
 
-      markers.current.forEach(marker => marker.remove());
+      markers.current.forEach((marker) => marker.remove());
       markers.current = [];
 
-      clusters.forEach(cluster => {
-        const [longitude, latitude] = cluster.geometry.coordinates;
-        const { cluster: isCluster, point_count: pointCount } = cluster.properties;
+      clusters.forEach((clusterData) => {
+        const [longitude, latitude] = clusterData.geometry.coordinates;
+        const {
+          cluster: isCluster,
+          point_count: pointCount,
+          cluster_id: clusterId,
+        } = clusterData.properties;
 
         let markerElement;
         if (isCluster) {
-          markerElement = document.createElement('div');
-          markerElement.className = 'cluster-marker';
+          markerElement = document.createElement("div");
+          markerElement.className = "cluster-marker";
           markerElement.innerHTML = pointCount;
-          markerElement.style.width = `${30 + pointCount / points.length * 20}px`;
-          markerElement.style.height = `${30 + pointCount / points.length * 20}px`;
+          markerElement.style.width = `${
+            30 + (pointCount / roommates.length) * 20
+          }px`;
+          markerElement.style.height = `${
+            30 + (pointCount / roommates.length) * 20
+          }px`;
 
-          markerElement.addEventListener('click', () => {
+          markerElement.addEventListener("click", () => {
             const zoom = map.current.getZoom();
-            map.current.easeTo({
-              center: [longitude, latitude],
-              zoom: zoom + 2,
-            });
+            const clusterPoints = cluster.current.getLeaves(
+              clusterId,
+              Infinity
+            );
+            const clusteredRoommates = clusterPoints.map((point) =>
+              roommates.find((r) => r._id === point.properties.id)
+            );
+            setSelectedRoommates(clusteredRoommates);
+            setSelectedRoommate(null);
           });
         } else {
-          markerElement = document.createElement('div');
-          markerElement.className = 'point-marker';
-          markerElement.innerHTML = `<div style="background: rgba(100, 150, 200); color: white; padding: 5px 10px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);">${cluster.properties.price}тг</div>`;
-          // markerElement.addEventListener('click', () => {
-          //   navigate(`/findroommate/${cluster.properties.id}`);
-          // });
-          markerElement.addEventListener('click', () => (
-            <RoommateCard/>
-      ));
+          markerElement = document.createElement("div");
+          markerElement.className = "point-marker";
+          markerElement.innerHTML = `<div style="background: rgba(100, 150, 200); color: white; padding: 5px 10px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);">${clusterData.properties.price}тг</div>`;
+          markerElement.addEventListener("click", () => {
+            setSelectedRoommate(clusterData.properties.id);
+            setSelectedRoommates([]);
+          });
         }
 
         const marker = new mapboxgl.Marker({ element: markerElement })
@@ -79,28 +89,79 @@ const Map = ({ points }) => {
       });
     };
 
-    map.current.on('load', () => {
-      cluster.load(
-        points.map(point => ({
-          type: 'Feature',
-          properties: { title: point.title, id: point.id, price: point.price },
+    map.current.on("load", () => {
+      cluster.current.load(
+        roommates.map((roommate) => ({
+          type: "Feature",
+          properties: {
+            title: roommate.title,
+            id: roommate._id,
+            price: roommate.monthlyExpensePerPerson,
+          },
           geometry: {
-            type: 'Point',
-            coordinates: [point.coordinates[0], point.coordinates[1]],
+            type: "Point",
+            coordinates: [
+              roommate.address.coordinates[0],
+              roommate.address.coordinates[1],
+            ],
           },
         }))
       );
       updateMarkers();
-      setLoading(false);
     });
 
-    map.current.on('move', updateMarkers);
-    map.current.on('zoom', updateMarkers);
-  }, [points, navigate]);
-  if(loading){
-    return (<Skeleton height={700} width='100%'/>)
-  }
-  return <div ref={mapContainer} className="map-container rounded-[5px]" style={{ width: '100%', height: '700px' }} />;
+    map.current.on("move", updateMarkers);
+    map.current.on("zoom", updateMarkers);
+  }, [roommates]);
+
+  return (
+    <div
+      style={{ display: "flex" }}
+      className="max-w-[1200px] mx-[auto] px-[20px]"
+    >
+      <div
+        style={{
+          maxHeight: "100vh",
+          overflowY: "scroll",
+          width:
+            selectedRoommate ||
+            (selectedRoommates && selectedRoommates.length > 0)
+              ? "300px"
+              : "0px",
+          transition: "width 0.3s ease",
+          paddingRight:
+            selectedRoommate ||
+            (selectedRoommates && selectedRoommates.length > 0)
+              ? "20px"
+              : "0px",
+        }}
+        className={`space-y-[20px] p-[20px] pl-0`}
+      >
+        {selectedRoommates.length > 0 ? (
+          selectedRoommates.map((roommate) => (
+            <RoommateCard key={roommate._id} roommate={roommate} />
+          ))
+        ) : selectedRoommate ? (
+          <RoommateCard
+            roommate={roommates.find((r) => r._id === selectedRoommate)}
+          />
+        ) : null}
+      </div>
+      <div
+        ref={mapContainer}
+        className="map-container"
+        style={{
+          height: "100vh",
+          width:
+            selectedRoommate ||
+            (selectedRoommates && selectedRoommates.length > 0)
+              ? "860px"
+              : "100%",
+          transition: "width 0.3s ease",
+        }}
+      />
+    </div>
+  );
 };
 
 export default Map;

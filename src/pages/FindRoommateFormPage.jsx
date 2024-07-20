@@ -29,7 +29,6 @@ export default function FindRoommateFormPage() {
   const [contactNumber, setContactNumber] = useState("");
   const [callPreference, setCallPreference] = useState(false);
   const [whatsappNumber, setWhatsappNumber] = useState("");
-  const [countPeople, setCountPeople] = useState(0);
   const [whatsappNumberPreference, setWhatsappNumberPreference] =
     useState(true);
   const [redirect, setRedirect] = useState(false);
@@ -428,45 +427,6 @@ export default function FindRoommateFormPage() {
             Следующие данные необязательны, но, заполнив их, вы поможете вашему
             будущему соседу по комнате избежать лишних вопросов
           </h3>
-          <div className="w-full bg-white rounded-[5px] p-[20px] mb-[20px]">
-            {preInput("Максимальное количество людей в квартире", "")}
-            <div className=" flex items-start gap-[20px]">
-              <input
-                type="text"
-                placeholder="Количество людей"
-                value={countPeople}
-                onChange={(e) => setCountPeople(e.target.value)}
-                className={`w-[80px] h-[40px] text-[30px] font-bold bg-[#D9D9D9] border-[1px] border-[#D9D9D9] rounded-[5px] text-center ${
-                  countPeople <= 0 ? "border-[red]" : ""
-                }`}
-              />
-              <div className="flex items-start gap-[10px]">
-                <button
-                  type="button"
-                  className="bg-[#FFE500] w-[40px] h-[40px] rounded-[5px] hover:bg-[#E6D005] flex items-center justify-center"
-                  onClick={() => setCountPeople((prev) => prev + 1)}
-                >
-                  <img
-                    src={upIcon}
-                    alt=""
-                    className="w-[40px] h-[40px] rounded-[5px]"
-                  />
-                </button>
-                <button
-                  type="button"
-                  className={`bg-[#FFE500] w-[40px] h-[40px] rounded-[5px] hover:bg-[#E6D005] flex items-center justify-center `}
-                  disabled={countPeople <= 0}
-                  onClick={() => setCountPeople((prev) => prev - 1)}
-                >
-                  <img
-                    src={downIcon}
-                    alt=""
-                    className="w-[40px] h-[40px] rounded-[5px]"
-                  />
-                </button>
-              </div>
-            </div>
-          </div>
           <div className="w-full bg-white rounded-[5px] p-[20px] mb-[20px]">
             {preInput("Есть депозит?", "")}
             <label className="inline-flex items-center gap-[15px]">
