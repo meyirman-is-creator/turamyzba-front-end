@@ -44,6 +44,24 @@ export default function PlacesPage() {
     }
   };
 
+  const restorePlace = async (placeId) => {
+    const accessToken = localStorage.getItem("accessToken");
+    try {
+      await axios.put(`/restore-announcement/${placeId}`, null, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      setArchivedPlaces(archivedPlaces.filter((place) => place._id !== placeId));
+      setPlaces([
+        ...places,
+        archivedPlaces.find((place) => place._id === placeId),
+      ]);
+    } catch (error) {
+      console.error("Error restoring place:", error);
+    }
+  };
+
   const deletePlace = async (placeId) => {
     const accessToken = localStorage.getItem("accessToken");
     try {
@@ -90,7 +108,7 @@ export default function PlacesPage() {
           </Link>
         </div>
 
-        <div className="mt-[50px">
+        <div className="mt-[50px]">
           <h2 className="text-[30px] font-bold mb-[20px]">
             Активные объявления
           </h2>
@@ -184,8 +202,7 @@ export default function PlacesPage() {
                   key={place._id}
                   className="flex flex-col gap-[20px] bg-[white] p-[20px] rounded-[5px] mb-4"
                 >
-                  <Link
-                    to={`/account/findroommate/${place._id}`}
+                  <div
                     className="flex w-[full] gap-[20px] h-[200px] rounded-[5px]"
                   >
                     {place.photos.length > 0 && (
@@ -211,11 +228,17 @@ export default function PlacesPage() {
                         {place.monthlyExpensePerPerson} тенге
                       </p>
                     </div>
-                  </Link>
+                  </div>
                   
                   <div className="flex flex-col justify-between">
                     <button
                       className="mt-2 px-4 py-2 bg-[#FFE500] text-black rounded-[5px]"
+                      onClick={() => restorePlace(place._id)}
+                    >
+                      Восстановить
+                    </button>
+                    <button
+                      className="mt-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
                       onClick={() => deletePlace(place._id)}
                     >
                       Удалить

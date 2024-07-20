@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import PhotosUploader from "../PhotosUploads";
 import AccountNavigation from "../components/AccountNavigation";
-import { Navigate, useParams } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Header from "../components/Header";
 import checkIcon from "../assets/checkIcon.svg";
@@ -60,13 +60,17 @@ export default function FindRoommateFormPage() {
       .then((response) => {
         const { data } = response;
         setTitle(data.title);
-        setRegion(data.address.region);
-        setDistrict(data.address.district);
-        setAddress(data.address.address);
+        const [regionPart, districtPart, addressPart] =
+          data.address.address.split(", ");
+        setRegion(regionPart);
+        setDistrict(districtPart);
+        setAddress(addressPart);
         setMonthlyExpensePerPerson(data.monthlyExpensePerPerson.toString());
-        setUtilityService(data.utilityService.toString());
-        setDeposit(data.deposit.toString());
-        setMoveInStart(data.moveInStart);
+        setUtilityService(
+          data.utilityService ? data.utilityService.toString() : ""
+        );
+        setDeposit(data.deposit ? data.deposit.toString() : "");
+        setMoveInStart(data.moveInStart.split("T")[0]);
         setMaxPeople(data.maxPeople);
         setApartmentInfo(data.apartmentInfo);
         setOwnerInfo(data.ownerInfo);
@@ -197,7 +201,7 @@ export default function FindRoommateFormPage() {
       whatsappNumber,
       whatsappNumberPreference,
       selectedGender,
-      communalServices
+      communalServices,
     };
     const accessToken = localStorage.getItem("accessToken");
 
@@ -222,7 +226,7 @@ export default function FindRoommateFormPage() {
   }
 
   if (redirect) {
-    return <Navigate to="/account/findroommates" />;
+    return <Navigate to="/account/findroommate" />;
   }
 
   const handleGenderSelection = (gender) => {
@@ -618,12 +622,12 @@ export default function FindRoommateFormPage() {
             >
               Подать объявление
             </button>
-            <button
-              type="button"
-              className="w-[270px] bg-[white] border-[black] border-[5px] rounded-[5px] text-[20px] font-medium h-[50px] text-black"
+            <Link
+              to={"/account/findroommate"}
+              className="w-[270px] flex justify-center items-center bg-[white] border-[black] border-[5px] rounded-[5px] text-[20px] font-medium h-[50px] text-black"
             >
               Отмена
-            </button>
+            </Link>
           </div>
         </form>
       </div>
