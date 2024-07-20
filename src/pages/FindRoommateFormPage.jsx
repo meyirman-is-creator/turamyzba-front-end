@@ -9,10 +9,13 @@ import upIcon from "../assets/upIcon.svg";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
 import downIcon from "../assets/downIcon.svg";
+import Regions from "../data/Regions.json";
 
 export default function FindRoommateFormPage() {
   const { id } = useParams();
   const [title, setTitle] = useState("");
+  const [region, setRegion] = useState("");
+  const [district, setDistrict] = useState("");
   const [address, setAddress] = useState("");
   const [addedPhotos, setAddedPhotos] = useState([]);
   const [monthlyExpensePerPerson, setMonthlyExpensePerPerson] = useState("");
@@ -35,6 +38,9 @@ export default function FindRoommateFormPage() {
   const [selectedGender, setSelectedGender] = useState("female");
   const [communalServices, setCommunalServices] = useState(false);
 
+  const [showRegionError, setShowRegionError] = useState(false);
+  const [showDistrictError, setShowDistrictError] = useState(false);
+
   const apartmentInfoRef = useRef(null);
   const ownerInfoRef = useRef(null);
 
@@ -54,6 +60,8 @@ export default function FindRoommateFormPage() {
       .then((response) => {
         const { data } = response;
         setTitle(data.title);
+        setRegion(data.address.region);
+        setDistrict(data.address.district);
         setAddress(data.address.address);
         setMonthlyExpensePerPerson(data.monthlyExpensePerPerson.toString());
         setUtilityService(data.utilityService.toString());
@@ -67,6 +75,8 @@ export default function FindRoommateFormPage() {
         setCallPreference(data.callPreference);
         setWhatsappNumber(data.whatsappNumber);
         setAddedPhotos(data.photos);
+        setSelectedGender(data.selectedGender);
+        setCommunalServices(data.communalServices);
       })
       .catch((error) => {
         console.error("Error fetching roommate details:", error);
@@ -135,16 +145,44 @@ export default function FindRoommateFormPage() {
     adjustTextareaHeight(ownerInfoRef);
   };
 
+  const handleRegionChange = (event) => {
+    setRegion(event.target.value);
+    setDistrict(""); // Сбросить район при изменении региона
+    setShowRegionError(false);
+  };
+
+  const handleDistrictChange = (event) => {
+    setDistrict(event.target.value);
+    setShowDistrictError(false);
+  };
+
   useEffect(() => {
     adjustTextareaHeight(apartmentInfoRef);
     adjustTextareaHeight(ownerInfoRef);
     adjustTextareaHeight(textareaRef);
   }, []);
+
+  const validateForm = () => {
+    let valid = true;
+    if (!region) {
+      setShowRegionError(true);
+      valid = false;
+    }
+    if (!district) {
+      setShowDistrictError(true);
+      valid = false;
+    }
+    return valid;
+  };
+
   async function saveRoommate(e) {
     e.preventDefault();
+    if (!validateForm()) {
+      return;
+    }
     const roommateData = {
       title,
-      address,
+      address: `${region}, ${district}, ${address}`,
       addedPhotos,
       monthlyExpensePerPerson,
       utilityService,
@@ -157,6 +195,9 @@ export default function FindRoommateFormPage() {
       contactNumber,
       callPreference,
       whatsappNumber,
+      whatsappNumberPreference,
+      selectedGender,
+      communalServices
     };
     const accessToken = localStorage.getItem("accessToken");
 
@@ -249,11 +290,12 @@ export default function FindRoommateFormPage() {
               </label>
             </div>
           </div>
+
           <div className="w-full bg-white rounded-[5px] p-[20px] mb-[20px]">
             {preInput("Сколько людей ищете?*", "")}
             <div className=" flex items-start gap-[20px]">
               <input
-                type="text"
+                type="number"
                 placeholder="Количество людей"
                 value={maxPeople}
                 onChange={(e) => setMaxPeople(e.target.value)}
@@ -300,13 +342,70 @@ export default function FindRoommateFormPage() {
           </div>
           <div className="w-full bg-white rounded-[5px] p-[20px] mb-[20px]">
             {preInput("Адрес*", "Введите адрес жилья")}
-            <input
-              type="text"
-              placeholder="Адрес"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              className="w-full bg-[#D9D9D9] rounded-[5px] text-[black] font-medium text-[20px] h-[50px] px-[15px]"
-            />
+            <div className="w-[100%] flex justify-between">
+              <div className="w-[48%] flex justify-between">
+                <div className="w-[48%]">
+                  <select
+                    value={region}
+                    onChange={handleRegionChange}
+                    className={`w-[100%] bg-[#D9D9D9] rounded-[5px] text-[black] font-medium text-[20px] h-[50px] px-[15px] border-[1px] ${
+                      showRegionError ? "border-[red]" : ""
+                    }`}
+                  >
+                    <option value="" disabled>
+                      Выберите регион
+                    </option>
+                    {Regions.regions.map((region) => (
+                      <option key={region.name} value={region.name}>
+                        {region.name}
+                      </option>
+                    ))}
+                  </select>
+                  {showRegionError && (
+                    <span className="text-[red]">
+                      Необходимо выбрать область
+                    </span>
+                  )}
+                </div>
+                <div className="w-[48%]">
+                  {region && (
+                    <select
+                      value={district}
+                      onChange={handleDistrictChange}
+                      className={`w-[100%] bg-[#D9D9D9] rounded-[5px] text-[black] border-[1px] font-medium text-[20px] h-[50px] px-[15px] ${
+                        showDistrictError ? "border-[red]" : ""
+                      }`}
+                    >
+                      <option value="" disabled>
+                        Выберите район
+                      </option>
+                      {Regions.regions
+                        .find((r) => r.name === region)
+                        .districts.map((district) => (
+                          <option key={district} value={district}>
+                            {district}
+                          </option>
+                        ))}
+                    </select>
+                  )}
+                  {showDistrictError && (
+                    <span className="text-[red]">Необходимо выбрать район</span>
+                  )}
+                </div>
+              </div>
+              <input
+                type="text"
+                placeholder="Адрес"
+                value={address}
+                onClick={() => {
+                  console.log("asdfasd");
+                  if (!region) setShowRegionError(true);
+                  else if (region && !district) setShowDistrictError(true);
+                }}
+                onChange={(e) => setAddress(e.target.value)}
+                className="w-[50%] bg-[#D9D9D9] rounded-[5px] text-[black] font-medium text-[20px] h-[50px] px-[15px]"
+              />
+            </div>
           </div>
           <div className="w-full bg-white rounded-[5px] p-[20px] mb-[20px]">
             {preInput("Фотографии*", "Чем больше, тем лучше")}
@@ -359,7 +458,6 @@ export default function FindRoommateFormPage() {
                   value={contactNumber}
                   className="w-full bg-[#D9D9D9] rounded-[5px] text-[black] font-medium text-[20px] h-[50px] px-[15px]"
                   onChange={setContactNumber}
-                  pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
                 />
               </>
             )}
@@ -393,7 +491,6 @@ export default function FindRoommateFormPage() {
                   value={whatsappNumber}
                   className="w-full bg-[#D9D9D9] rounded-[5px] text-[black] font-medium text-[20px] h-[50px] px-[15px]"
                   onChange={setWhatsappNumber}
-                  pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
                 />
               </>
             )}
@@ -404,7 +501,7 @@ export default function FindRoommateFormPage() {
               ref={textareaRef}
               placeholder="Опишите свои предпочтения к сожителю"
               value={roomiePreferences}
-              className="w-full bg-[#D9D9D9] rounded-[5px] text-[black] font-medium text-[20px] p-[15px]"
+              className="w-full bg-[#D9D9D9] rounded-[5px] text-[black] font-medium текст-[20px] p-[15px]"
               style={{ overflow: "hidden", resize: "none" }}
               onChange={handleInputChange}
               onInput={handleInputChange}
@@ -427,6 +524,7 @@ export default function FindRoommateFormPage() {
             Следующие данные необязательны, но, заполнив их, вы поможете вашему
             будущему соседу по комнате избежать лишних вопросов
           </h3>
+
           <div className="w-full bg-white rounded-[5px] p-[20px] mb-[20px]">
             {preInput("Есть депозит?", "")}
             <label className="inline-flex items-center gap-[15px]">

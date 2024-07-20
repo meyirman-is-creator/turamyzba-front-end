@@ -20,7 +20,7 @@ export default function AccountNavigation() {
     return classes;
   }
   return (
-    <nav className="w-full flex justify-center mt-8 gap-2 mb-[60px]">
+    <nav className="w-[1200px] px-[20px] mx-[auto] flex justify-center mt-8 gap-2 mb-[60px]">
       <Link className={linkClasses("profile")} to={"/account"}>
         Профиль
       </Link>
