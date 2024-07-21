@@ -15,6 +15,7 @@ export function UserContextProvider({ children }) {
           },
         })
         .then(({ data }) => {
+          console.log(data)
           setUser(data);
           setReady(true);
         });

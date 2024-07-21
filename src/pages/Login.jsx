@@ -73,6 +73,11 @@ export default function LoginPage() {
               Sign In
             </button>
             <div className="text-center py-4 text-gray-600">
+              <Link to="/forgot-password" className="text-indigo-500 hover:underline">
+                Forgot Password?
+              </Link>
+            </div>
+            <div className="text-center py-4 text-gray-600">
               Don't have an account yet?{" "}
               <Link to="/register" className="text-indigo-500 hover:underline">
                 Register now
