@@ -38,7 +38,7 @@ const Pagination = ({ total, limit, page, setPage }) => {
         <div className="flex justify-center items-center mt-[30px] gap-[10px] mb-[50px]">
           {page !== 1 && (
             <button
-              className="w-[50px] h-[50px] flex items-center justify-center rounded-[5px] border-[1px] border-black"
+              className="w-[50px] h-[50px] flex items-center justify-center rounded-[5px] border-[1px] border-[#33FF00]"
               onClick={() => setPage(page - 1)}
             >
               <img
@@ -53,8 +53,8 @@ const Pagination = ({ total, limit, page, setPage }) => {
             <button
               className={`w-[50px] font-semibold text-[30px] h-[50px] flex items-center justify-center rounded-[5px] ${
                 1 === page
-                  ? "bg-[#565656] text-[#FFE500]"
-                  : "border-[1px] border-black"
+                  ? "bg-[#33FF00] text-[#000]"
+                  : "border-[1px] border-[#33FF00] text-[#33FF00]"
               }`}
               onClick={() => setPage(1)}
             >
@@ -69,8 +69,8 @@ const Pagination = ({ total, limit, page, setPage }) => {
               key={pg}
               className={`w-[50px] font-semibold text-[30px] h-[50px] flex items-center justify-center rounded-[5px] ${
                 pg === page
-                  ? "bg-[#565656] text-[#FFE500]"
-                  : "border-[1px] border-black"
+                  ? "bg-[#33FF00] text-[#000]"
+                  : "border-[1px] border-[#33FF00] text-[#33FF00]"
               }`}
               onClick={() => setPage(pg)}
             >
@@ -84,8 +84,8 @@ const Pagination = ({ total, limit, page, setPage }) => {
             <button
               className={`w-[50px] font-semibold text-[30px] h-[50px] flex items-center justify-center rounded-[5px] ${
                 totalPages === page
-                  ? "bg-[#565656] text-[#FFE500]"
-                  : "border-[1px] border-black"
+                  ? "bg-[#33FF00] text-[#000]"
+                  : "border-[1px] border-[#33FF00] text-[#33FF00]"
               }`}
               onClick={() => setPage(totalPages)}
             >

@@ -9,7 +9,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [redirect, setRedirect] = useState(false);
   const [error, setError] = useState("");
-  const { setUser } = useContext(UserContext);
+  const { setUser, refreshProfile } = useContext(UserContext);
 
   async function handleLoginSubmit(e) {
     e.preventDefault();
@@ -18,12 +18,12 @@ export default function LoginPage() {
         email,
         password,
       });
-
-      localStorage.setItem('accessToken', response.data.accessToken);
+      localStorage.setItem("accessToken", response.data.accessToken);
       setUser(response.data.userDoc);
+      await refreshProfile();
       setRedirect(true);
     } catch (error) {
-      setError("Invalid email or password. Please try again.");
+      setError("Неверный email или пароль. Попробуйте снова.");
       console.log(error);
     }
   }
@@ -35,32 +35,32 @@ export default function LoginPage() {
   return (
     <>
       <Header />
-      <div className="flex items-center justify-center min-h-screen bg-gray-100">
-        <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-8">
-          <h1 className="text-3xl font-semibold text-center text-gray-700 mb-6">
-            Login
+      <div className="flex items-center justify-center mt-[100px]">
+        <div className="w-full max-w-md bg-[#212B36] rounded-[5px] shadow-lg p-8">
+          <h1 className="text-3xl font-semibold text-center text-[white] mb-6">
+            Войти
           </h1>
           <form onSubmit={handleLoginSubmit}>
             <div className="mb-4">
-              <label className="block text-gray-700">Email</label>
+              <label className="block text-white">Email</label>
               <input
                 type="email"
-                placeholder="Enter your email"
+                placeholder="Введите ваш email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none focus:border-indigo-500"
+                className="w-full px-3 py-2 text-black border rounded-[5px] focus:outline-none placeholder:text-[#919EAB]"
               />
             </div>
             <div className="mb-6">
-              <label className="block text-gray-700">Password</label>
+              <label className="block text-white">Пароль</label>
               <input
                 type="password"
-                placeholder="Enter your password"
+                placeholder="Введите ваш пароль"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none focus:border-indigo-500"
+                className="w-full px-3 py-2 text-black border rounded-[5px] focus:outline-none placeholder:text-[#919EAB]"
               />
             </div>
             {error && (
@@ -68,19 +68,19 @@ export default function LoginPage() {
             )}
             <button
               type="submit"
-              className="w-full py-2 bg-indigo-500 text-white font-semibold rounded-lg hover:bg-indigo-600 focus:outline-none focus:bg-indigo-600"
+              className="w-full py-2 bg-indigo-500 text-white font-semibold rounded-[5px] hover:bg-indigo-600 focus:outline-none focus:bg-indigo-600"
             >
-              Sign In
+              Войти
             </button>
             <div className="text-center py-4 text-gray-600">
               <Link to="/forgot-password" className="text-indigo-500 hover:underline">
-                Forgot Password?
+                Забыли пароль?
               </Link>
             </div>
-            <div className="text-center py-4 text-gray-600">
-              Don't have an account yet?{" "}
+            <div className="text-center py-4 text-[#919EAB]">
+              Нет аккаунта?{" "}
               <Link to="/register" className="text-indigo-500 hover:underline">
-                Register now
+                Зарегистрируйтесь сейчас
               </Link>
             </div>
           </form>

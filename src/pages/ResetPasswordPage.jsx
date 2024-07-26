@@ -1,66 +1,67 @@
 import axios from 'axios';
 import { useState } from 'react';
-import { useParams, Navigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Header from '../components/Header';
 
 export default function ResetPasswordPage() {
-  const { token } = useParams();
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
-  const [redirect, setRedirect] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { email, code } = location.state || {};
+
+  console.log(`Email: ${email}, Code: ${code}`); // Проверка передачи данных
 
   async function handleResetPasswordSubmit(e) {
     e.preventDefault();
     if (newPassword !== confirmPassword) {
-      setError('Пароли не совпадают');
+      setError('Пароли не совпадают.');
+      setMessage('');
       return;
     }
     try {
-      await axios.post('/reset-password', { token, newPassword });
-      setMessage('Пароль успешно сброшен');
+      await axios.post('/reset-password', { email, code, newPassword });
+      setMessage('Пароль успешно сброшен.');
       setError('');
-      setRedirect(true);
+      navigate('/login');
     } catch (error) {
-      setError('Произошла ошибка. Пожалуйста, попробуйте снова.');
+      console.error("Ошибка при сбросе пароля:", error.response.data);
+      setError('Ошибка при сбросе пароля.');
       setMessage('');
     }
-  }
-
-  if (redirect) {
-    return <Navigate to="/login" />;
   }
 
   return (
     <>
       <Header />
-      <div className="flex items-center justify-center min-h-screen bg-gray-100">
-        <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-8">
-          <h1 className="text-3xl font-semibold text-center text-gray-700 mb-6">
-            Reset Password
+      <div className="flex items-center justify-center mt-[100px]">
+        <div className="w-full max-w-md bg-[#212B36] rounded-[5px] shadow-lg p-8">
+          <h1 className="text-3xl font-semibold text-center text-white mb-6">
+            Сброс пароля
           </h1>
           <form onSubmit={handleResetPasswordSubmit}>
             <div className="mb-4">
-              <label className="block text-gray-700">New Password</label>
+              <label className="block text-white">Новый пароль</label>
               <input
                 type="password"
-                placeholder="Enter new password"
+                placeholder="Введите новый пароль"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
                 required
-                className="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none focus:border-indigo-500"
+                className="w-full px-3 py-2 text-black placeholder:text-[#919EAB] border rounded-[5px] focus:outline-none "
               />
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700">Confirm Password</label>
+              <label className="block text-white">Повторите пароль</label>
               <input
                 type="password"
-                placeholder="Confirm new password"
+                placeholder="Повторите новый пароль"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
-                className="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none focus:border-indigo-500"
+                className="w-full px-3 py-2 text-black placeholder:text-[#919EAB] border rounded-[5px] focus:outline-none "
               />
             </div>
             {message && (
@@ -71,9 +72,9 @@ export default function ResetPasswordPage() {
             )}
             <button
               type="submit"
-              className="w-full py-2 bg-indigo-500 text-white font-semibold rounded-lg hover:bg-indigo-600 focus:outline-none focus:bg-indigo-600"
+              className="w-full py-2 bg-indigo-500 text-white font-semibold rounded-[5px] hover:bg-indigo-600 focus:outline-none focus:bg-indigo-600"
             >
-              Reset Password
+              Сбросить пароль
             </button>
           </form>
         </div>

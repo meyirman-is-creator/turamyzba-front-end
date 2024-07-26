@@ -5,7 +5,7 @@ import supercluster from "supercluster";
 import config from "../config";
 import RoommateCard from "./FindRoommate";
 
-const Map = ({ roommates }) => {
+const Map = ({ roommates, view }) => {
   mapboxgl.accessToken = config.VITE_MAP_API_KEY;
 
   const mapContainer = useRef(null);
@@ -20,12 +20,24 @@ const Map = ({ roommates }) => {
     })
   );
 
+  const formatPrice = (price) => {
+    if (price >= 1000000000) {
+      return (price / 1000000000) + ' млрд ';
+    } else if (price >= 1000000) {
+      return (price / 1000000)+ ' млн ';
+    } else if (price >= 1000) {
+      return (price / 1000) + ' к ';
+    } else {
+      return price;
+    }
+  };
+
   useEffect(() => {
     if (map.current || !mapContainer.current) return; // Wait for the map container to be defined
 
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
-      style: "mapbox://styles/mapbox/streets-v11",
+      style: "mapbox://styles/mapbox/dark-v10", // Change to dark style
       center: [76.9285, 43.2567], // center map on Almaty
       zoom: 10,
     });
@@ -52,6 +64,8 @@ const Map = ({ roommates }) => {
           markerElement = document.createElement("div");
           markerElement.className = "cluster-marker";
           markerElement.innerHTML = pointCount;
+          markerElement.style.color = "#000";
+          markerElement.style.backgroundColor = "#33FF00"; // Change cluster background color
           markerElement.style.width = `${
             30 + (pointCount / roommates.length) * 20
           }px`;
@@ -74,7 +88,7 @@ const Map = ({ roommates }) => {
         } else {
           markerElement = document.createElement("div");
           markerElement.className = "point-marker";
-          markerElement.innerHTML = `<div style="background: rgba(100, 150, 200); color: white; padding: 5px 10px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);">${clusterData.properties.price}тг</div>`;
+          markerElement.innerHTML = `<div style="background: #7635DC; color: white; padding: 5px 10px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);">${formatPrice(clusterData.properties.price)}₸</div>`;
           markerElement.addEventListener("click", () => {
             setSelectedRoommate(clusterData.properties.id);
             setSelectedRoommates([]);
@@ -114,10 +128,16 @@ const Map = ({ roommates }) => {
     map.current.on("zoom", updateMarkers);
   }, [roommates]);
 
+  useEffect(() => {
+    if (view === "map") {
+      mapContainer.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [view]);
+
   return (
     <div
       style={{ display: "flex" }}
-      className="max-w-[1200px] mx-[auto] px-[20px]"
+      className="max-w-[1200px] rounded-[5px] mx-auto px-[20px] mt-[40px] shadow-lg"
     >
       <div
         style={{
@@ -135,7 +155,7 @@ const Map = ({ roommates }) => {
               ? "20px"
               : "0px",
         }}
-        className={`space-y-[20px] p-[20px] pl-0`}
+        className={`space-y-[20px] pl-0`}
       >
         {selectedRoommates.length > 0 ? (
           selectedRoommates.map((roommate) => (
@@ -158,6 +178,7 @@ const Map = ({ roommates }) => {
               ? "860px"
               : "100%",
           transition: "width 0.3s ease",
+          borderRadius: "5px",
         }}
       />
     </div>

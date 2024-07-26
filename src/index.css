@@ -4,7 +4,7 @@
 
 body {
   font-family: "Montserrat", sans-serif;
-  background: #d9d9d9;
+  background: #161C24;
 }
 .map-container {
   position: relative;
@@ -107,6 +107,22 @@ body {
 
 }
 .PhoneInputInput{
-  background-color: #d9d9d9;
+  background-color: #919EAB;
   outline: none;
+
+}
+.PhoneInputInput::placeholder{
+  color: #6a6a6a;
+}
+.slick-arrow, .slick-prev, .slick-next{
+  display: none;
+}
+.slick-prev::before, .slick-next::before{
+  display: none;
+}
+.slick-dots li.slick-active button:before{
+  color: #33FF00;
+}
+.slick-dots li button:before{
+  color: #919EAB;
 }

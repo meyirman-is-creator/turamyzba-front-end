@@ -7,7 +7,10 @@ module.exports = {
     extend: {
       colors:{
         primary: '#f5385d',
-      }
+      },
+      boxShadow: {
+        'custom': '0px 6px 10px 0px rgba(130, 130, 130, 0.25)',
+      },
     },
   },
   plugins: [],

@@ -1,13 +1,12 @@
 import { useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { UserContext } from "../UserContext";
-import { Navigate, useParams } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import PlacesPage from "./PlacesPage";
-import AccountNavigation from "../components/AccountNavigation";
 import Header from "../components/Header";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-
+import userRegIcon from '../photo/userRegProfileIcon.svg'
 export default function AccountPage() {
   const [redirect, setRedirect] = useState(null);
   const { ready, user, setUser } = useContext(UserContext);
@@ -82,6 +81,7 @@ export default function AccountPage() {
     return (
       <>
         <Header />
+
         <div className="mt-[100px] pb-[50px] flex items-center justify-center">
           <div className="max-w-3xl w-full bg-white rounded-lg shadow-md p-8">
             <div className="flex flex-col items-center ">
@@ -137,53 +137,64 @@ export default function AccountPage() {
   return (
     <div className="pb-[50px]">
       <Header />
-      <AccountNavigation />
+      <nav className="max-w-[1200px] px-[20px] mx-[auto] mt-[40px] text-[20px] mb-[20px] text-[#33FF00] gap-[5px] flex items-end ">
+        <Link to="/" className="text-[#33FF00] hover:underline">
+          Главная страница
+        </Link>{" "}
+        /<span className="text-[#919EAB]">Мой профиль</span>
+      </nav>
+
       {subpage === "profile" && (
-        <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-md p-8 my-8">
+        <div className="max-w-3xl mx-auto bg-[#212B36] rounded-lg shadow-md p-8 px-[20px] my-8">
           <div className="flex flex-col items-center">
-            <img
-              src="https://via.placeholder.com/150"
-              alt="Profile"
-              className="w-24 h-24 rounded-full mb-4"
-            />
-            <h2 className="text-2xl font-semibold">{user?.fullName}</h2>
-            <p className="text-gray-500 mb-4">{user?.email}</p>
+            <div className="w-24 flex items-center justify-center h-24 rounded-full ">
+              <img
+                src={userRegIcon}
+                alt="Profile"
+                className="w-[full] h-[full] rounded-full mb-4"
+              />
+            </div>
+
+            <h2 className="text-2xl font-semibold text-white">
+              {user?.fullName}
+            </h2>
+            <p className="text-gray-500 mb-4 text-white">{user?.email}</p>
             <div className="flex flex-col md:flex-row md:space-x-4 w-full">
               <div className="flex flex-col w-full">
-                <label className="text-left font-semibold">Полное имя</label>
+                <label className="text-left font-semibold text-[white]">Полное имя</label>
                 <input
                   type="text"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  className="p-2 border rounded mb-4 w-full"
+                  className={`p-2 outline-none placeholder:text-[#5D656C] rounded mb-4 w-full ${editProfile ? 'bg-white' : 'bg-gray-500'}`}
                   disabled={!editProfile}
                 />
               </div>
               <div className="flex flex-col w-full">
-                <label className="text-left font-semibold">Никнейм</label>
+                <label className="text-left font-semibold text-[white]">Никнейм</label>
                 <input
                   type="text"
                   value={nickName}
                   onChange={(e) => setNickName(e.target.value)}
-                  className="p-2 border rounded mb-4 w-full"
+                  className={`p-2 outline-none placeholder:text-[#5D656C] rounded mb-4 w-full ${editProfile ? 'bg-white' : 'bg-gray-500'}`}
                   disabled={!editProfile}
                 />
               </div>
             </div>
             <div className="flex flex-col w-full">
-              <label className="text-left font-semibold">Email</label>
+              <label className="text-left font-semibold text-[white]">Email</label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="p-2 border rounded mb-4 w-full"
+                className={`p-2 text-black outline-none placeholder:text-[#5D656C] rounded mb-4 w-full  ${editProfile ? 'bg-white' : 'bg-gray-500'}`}
                 disabled={!editProfile}
               />
             </div>
             {editProfile && (
               <div className="flex flex-row w-full space-x-4">
                 <button
-                  className="bg-[#FFE500] text-black px-4 py-2 rounded w-full"
+                  className="bg-[#33FF00] text-black px-4 py-2 rounded w-full"
                   onClick={handleProfileUpdate}
                 >
                   Сохранить
@@ -198,7 +209,7 @@ export default function AccountPage() {
             )}
             {!editProfile && (
               <button
-                className="bg-black text-white px-4 py-2 rounded w-full mt-4"
+                className="bg-indigo-500 text-white px-4 py-2 rounded w-full"
                 onClick={() => setEditProfile(true)}
               >
                 Редактировать
@@ -207,37 +218,36 @@ export default function AccountPage() {
           </div>
           <hr className="my-6" />
           <div className="flex flex-col w-full">
-            <h3 className="text-xl font-semibold mb-4">Изменить пароль</h3>
             <div className="flex flex-col w-full">
-              <label className="text-left font-semibold">Старый пароль</label>
+              <label className="text-left font-semibold text-[white]">Старый пароль</label>
               <input
                 type="password"
                 value={oldPassword}
                 onChange={(e) => setOldPassword(e.target.value)}
-                className="p-2 border rounded mb-4 w-full"
+                className={`p-2 outline-none placeholder:text-[#5D656C] rounded mb-4 w-full ${editPassword ? 'bg-white' : 'bg-gray-500'}`}
                 disabled={!editPassword}
               />
             </div>
             <div className="flex flex-col md:flex-row md:space-x-4 w-full">
               <div className="flex flex-col w-full">
-                <label className="text-left font-semibold">Новый пароль</label>
+                <label className="text-left font-semibold text-[white]">Новый пароль</label>
                 <input
                   type="password"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
-                  className="p-2 border rounded mb-4 w-full"
+                  className={`p-2 outline-none placeholder:text-[#5D656C] rounded mb-4 w-full ${editPassword ? 'bg-white' : 'bg-gray-500'}`}
                   disabled={!editPassword}
                 />
               </div>
               <div className="flex flex-col w-full">
-                <label className="text-left font-semibold">
+                <label className="text-left font-semibold text-[white]">
                   Подтвердите пароль
                 </label>
                 <input
                   type="password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="p-2 border rounded mb-4 w-full"
+                  className={`p-2 outline-none placeholder:text-[#5D656C] rounded mb-4 w-full ${editPassword ? 'bg-white' : 'bg-gray-500'}`}
                   disabled={!editPassword}
                 />
               </div>
@@ -245,7 +255,7 @@ export default function AccountPage() {
             {editPassword && (
               <div className="flex flex-row w-full space-x-4">
                 <button
-                  className="bg-[#FFE500] text-black px-4 py-2 rounded w-full"
+                  className="bg-[#33FF00] text-black px-4 py-2 rounded w-full"
                   onClick={handlePasswordChange}
                 >
                   Сохранить
@@ -260,7 +270,7 @@ export default function AccountPage() {
             )}
             {!editPassword && (
               <button
-                className="bg-black text-white px-4 py-2 rounded w-full mt-4"
+                className="bg-indigo-500 text-white px-4 py-2 rounded w-full"
                 onClick={() => setEditPassword(true)}
               >
                 Изменить пароль

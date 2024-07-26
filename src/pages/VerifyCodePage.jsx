@@ -1,23 +1,33 @@
 import axios from 'axios';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Header from '../components/Header';
 
-export default function ForgotPasswordPage() {
-  const [email, setEmail] = useState('');
+export default function VerifyCodePage() {
+  const [code, setCode] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
+  const { email, isPasswordReset } = location.state || {};
 
-  async function handleForgotPasswordSubmit(e) {
+  async function handleVerifyCodeSubmit(e) {
     e.preventDefault();
     try {
-      await axios.post('/request-reset-password', { email });
-      setMessage('Код для сброса пароля отправлен на вашу почту.');
-      setError('');
-      navigate('/verify-code', { state: { email, isPasswordReset: true } });
+      const response = await axios.post('/verify-code', { email, code });
+
+      if (isPasswordReset) {
+        setMessage('Код подтвержден. Пожалуйста, сбросьте ваш пароль.');
+        navigate('/reset-password', { state: { email, code } });
+      } else {
+        setMessage('Код подтвержден.');
+        localStorage.setItem('accessToken', response.data.accessToken);
+        navigate('/')
+
+        window.location.reload();
+      }
     } catch (error) {
-      setError('Произошла ошибка. Пожалуйста, попробуйте снова.');
+      setError('Неверный или истекший код.');
       setMessage('');
     }
   }
@@ -28,16 +38,16 @@ export default function ForgotPasswordPage() {
       <div className="flex items-center justify-center mt-[100px]">
         <div className="w-full max-w-md bg-[#212B36] rounded-[5px] shadow-lg p-8">
           <h1 className="text-3xl font-semibold text-center text-white mb-6">
-            Забыли пароль
+            Верификация кода
           </h1>
-          <form onSubmit={handleForgotPasswordSubmit}>
+          <form onSubmit={handleVerifyCodeSubmit}>
             <div className="mb-4">
-              <label className="block text-white">Email</label>
+              <label className="block text-white">Код</label>
               <input
-                type="email"
-                placeholder="Введите ваш email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                type="text"
+                placeholder="Введите код"
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
                 required
                 className="w-full px-3 py-2 text-black placeholder:text-[#919EAB] border rounded-[5px] focus:outline-none "
               />
@@ -52,7 +62,7 @@ export default function ForgotPasswordPage() {
               type="submit"
               className="w-full py-2 bg-indigo-500 text-white font-semibold rounded-[5px] hover:bg-indigo-600 focus:outline-none focus:bg-indigo-600"
             >
-              Отправить
+              Подтвердить
             </button>
           </form>
         </div>

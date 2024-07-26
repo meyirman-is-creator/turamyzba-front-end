@@ -122,7 +122,7 @@ export default function PhotosUploader({ addedPhotos, onChange }) {
                 </div>
               ))}
             {Array.from({ length: selectedPhotoCount }).map((_, index) => (
-              <Skeleton key={index} height={250} width={250} className="rounded-[5px] bg-[#D9D9D9]" />
+              <Skeleton key={index} height={250} width={250} className="rounded-[5px] bg-[#212B36]" />
             ))}
           </>
         ) : (
@@ -190,7 +190,7 @@ export default function PhotosUploader({ addedPhotos, onChange }) {
                   </button>
                 </div>
               ))}
-            <label className="h-[250px] w-[250px] rounded-[5px] bg-[#D9D9D9] hover:bg-[#C7C4C4] flex flex-col items-center justify-center">
+            <label className="h-[250px] w-[250px] rounded-[5px] bg-[#919EAB] hover:bg-[#828E9A] flex flex-col items-center justify-center">
               <input
                 type="file"
                 multiple
