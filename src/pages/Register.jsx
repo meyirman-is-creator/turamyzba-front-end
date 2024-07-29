@@ -1,37 +1,50 @@
-import axios from 'axios';
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import Header from '../components/Header';
-import { ClipLoader } from 'react-spinners';
+import axios from "axios";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import Header from "../components/Header";
+import { ClipLoader } from "react-spinners";
+import useResponsive from "../service/useResponsive";
 
 export default function RegisterPage() {
-  const [fullName, setFullName] = useState('');
-  const [nickName, setNickName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
+  const [fullName, setFullName] = useState("");
+  const [nickName, setNickName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
+  const breakpoints = [
+    { name: "small", width: 480 },
+    { name: "medium", width: 768 },
+    { name: "large", width: 1130 },
+    { name: "xlarge", width: Infinity }, // for widths greater than 1024
+  ];
+  const activeBreakpoint = useResponsive(breakpoints);
+  const isSmall = activeBreakpoint === "small";
+  const isMedium = activeBreakpoint === "medium";
+  const isLarge = activeBreakpoint === "large";
+  const isXLarge = activeBreakpoint === "xlarge";
   async function registerUser(e) {
     e.preventDefault();
     if (password !== confirmPassword) {
-      setError('Пароли не совпадают');
+      setError("Пароли не совпадают");
       return;
     }
     setLoading(true);
     try {
-      const response = await axios.post('/register', {
+      const response = await axios.post("/register", {
         fullName,
         nickName,
         email,
         password,
       });
-      navigate('/verify-code', { state: { email, fullName, nickName, password, isPasswordReset: false } });
+      navigate("/verify-code", {
+        state: { email, fullName, nickName, password, isPasswordReset: false },
+      });
     } catch (error) {
       console.log(error);
-      setError('Ошибка регистрации. Попробуйте еще раз.');
+      setError("Ошибка регистрации. Попробуйте еще раз.");
     } finally {
       setLoading(false);
     }
@@ -40,7 +53,7 @@ export default function RegisterPage() {
   return (
     <>
       <Header />
-      <div className="flex items-center justify-center mt-[100px]">
+      <div className={`flex items-center justify-center my-[100px] ${(isMedium ||isSmall) && 'mt-[30px]'} px-[20px]`}>
         <div className="w-full max-w-md bg-[#212B36] rounded-[5px] p-8">
           <h1 className="text-3xl font-semibold text-center text-white mb-6">
             Регистрация
@@ -101,9 +114,7 @@ export default function RegisterPage() {
                 className="w-full px-3 py-2 text-black border rounded-[5px] focus:outline-none"
               />
             </div>
-            {error && (
-              <p className="mb-4 text-red-500 text-center">{error}</p>
-            )}
+            {error && <p className="mb-4 text-red-500 text-center">{error}</p>}
             {loading ? (
               <div className="flex justify-center">
                 <ClipLoader size={35} color={"#fff"} loading={loading} />
@@ -117,7 +128,7 @@ export default function RegisterPage() {
               </button>
             )}
             <div className="text-center py-4 text-[#919EAB]">
-              Уже зарегистрированы?{' '}
+              Уже зарегистрированы?{" "}
               <Link to="/login" className="text-indigo-500 hover:underline">
                 Войти
               </Link>

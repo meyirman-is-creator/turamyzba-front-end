@@ -7,6 +7,7 @@ import Header from "../components/Header";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import userRegIcon from '../photo/userRegProfileIcon.svg'
+import useResponsive from "../service/useResponsive";
 export default function AccountPage() {
   const [redirect, setRedirect] = useState(null);
   const { ready, user, setUser } = useContext(UserContext);
@@ -19,7 +20,17 @@ export default function AccountPage() {
   const [editProfile, setEditProfile] = useState(false);
   const [editPassword, setEditPassword] = useState(false);
   let { subpage } = useParams();
-
+  const breakpoints = [
+    { name: "small", width: 480 },
+    { name: "medium", width: 768 },
+    { name: "large", width: 1130 },
+    { name: "xlarge", width: Infinity }, // for widths greater than 1024
+  ];
+  const activeBreakpoint = useResponsive(breakpoints);
+  const isSmall = activeBreakpoint === "small";
+  const isMedium = activeBreakpoint === "medium";
+  const isLarge = activeBreakpoint === "large";
+  const isXLarge = activeBreakpoint === "xlarge";
   useEffect(() => {
     if (user) {
       setFullName(user.fullName);
@@ -137,7 +148,7 @@ export default function AccountPage() {
   return (
     <div className="pb-[50px]">
       <Header />
-      <nav className="max-w-[1200px] px-[20px] mx-[auto] mt-[40px] text-[20px] mb-[20px] text-[#33FF00] gap-[5px] flex items-end ">
+      <nav className={`max-w-[1200px] px-[20px] mx-[auto]  mb-[20px] text-[#33FF00] gap-[5px] flex items-end overflow-x-scroll ${isSmall ? 'mt-[20px] text-[10px]' : 'mt-[40px] text-[20px]'}`}>
         <Link to="/" className="text-[#33FF00] hover:underline">
           Главная страница
         </Link>{" "}
@@ -145,7 +156,7 @@ export default function AccountPage() {
       </nav>
 
       {subpage === "profile" && (
-        <div className="max-w-3xl mx-auto bg-[#212B36] rounded-lg shadow-md p-8 px-[20px] my-8">
+        <div className="max-w-3xl mx-auto bg-[#212B36] rounded-lg shadow-md p-8 px-[20px] mx-[20px] my-8">
           <div className="flex flex-col items-center">
             <div className="w-24 flex items-center justify-center h-24 rounded-full ">
               <img

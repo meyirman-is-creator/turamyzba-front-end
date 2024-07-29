@@ -75,7 +75,7 @@ export default function FindRoommateMainPage() {
   return (
     <div className={`${(isMedium || isSmall) && "pb-[80px]"}`}>
       <Header
-        setSearchResults={setSearchResults}
+        searchResults={searchResults}
         setView={setView}
         view={view}
         mapIcon={mapIcon}
