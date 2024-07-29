@@ -81,19 +81,19 @@ const RoommateCard = ({ roommate }) => {
   return (
     <Link
       to={"/findroommate/" + roommate._id}
-      className={`bg-[#212B36] rounded-[5px] ${isMediumRes ? 'w-full h-[auto]':'w-[270px] h-[700px]'}   p-[20px] shadow-md flex flex-col justify-between`}
+      className={`bg-[#212B36] rounded-[5px] ${(isMediumRes||isSmall) ? 'w-full h-[auto]':'w-[270px] h-[700px]'}   p-[20px] shadow-md flex flex-col justify-between`}
     >
       <div className="flex flex-col items-start">
         {roommate.photos?.length > 0 ? (
-          <div className={`${isMediumRes ? 'w-full py-[20px]':'w-[230px] p-[20px]'}  h-[230px] flex flex-col rounded-[5px] bg-[#D9D9D9]  justify-center items-center flex`}>
+          <div className={`${(isMediumRes||isSmall) ? 'w-full py-[20px]':'w-[230px] p-[20px]'}  h-[230px] flex flex-col rounded-[5px] bg-[#D9D9D9]  justify-center items-center flex`}>
             <img
-              className={` ${isMediumRes ? 'w-full':'w-[230px]'}  h-[230px] object-cover rounded-[5px]`}
+              className={` ${(isMediumRes||isSmall) ? 'w-full':'w-[230px]'}  h-[230px] object-cover rounded-[5px]`}
               src={roommate.photos[0]}
               alt={``}
             />
           </div>
         ) : (
-          <div className={`${isMediumRes ? 'w-full':'w-[230px]'}  h-[230px] flex flex-col rounded-[5px] bg-[#D9D9D9] p-[20px] justify-center items-center flex`}>
+          <div className={`${(isMediumRes||isSmall) ? 'w-full':'w-[230px]'}  h-[230px] flex flex-col rounded-[5px] bg-[#D9D9D9] p-[20px] justify-center items-center flex`}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
