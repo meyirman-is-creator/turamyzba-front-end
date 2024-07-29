@@ -4,6 +4,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import supercluster from "supercluster";
 import config from "../config";
 import RoommateCard from "./FindRoommate";
+import useResponsive from "../service/useResponsive";
 
 const Map = ({ roommates, view }) => {
   mapboxgl.accessToken = config.VITE_MAP_API_KEY;
@@ -31,14 +32,24 @@ const Map = ({ roommates, view }) => {
       return price;
     }
   };
-
+  const breakpoints = [
+    { name: "small", width: 480 },
+    { name: "medium", width: 768 },
+    { name: "large", width: 1130 },
+    { name: "xlarge", width: Infinity }, 
+  ];
+  const activeBreakpoint = useResponsive(breakpoints);
+  const isSmall = activeBreakpoint === "small";
+  const isMedium = activeBreakpoint === "medium";
+  const isLarge = activeBreakpoint === "large";
+  const isXLarge = activeBreakpoint === "xlarge";
   useEffect(() => {
-    if (map.current || !mapContainer.current) return; // Wait for the map container to be defined
+    if (map.current || !mapContainer.current) return; 
 
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
-      style: "mapbox://styles/mapbox/dark-v10", // Change to dark style
-      center: [76.9285, 43.2567], // center map on Almaty
+      style: "mapbox://styles/mapbox/dark-v10", 
+      center: [76.9285, 43.2567], 
       zoom: 10,
     });
 
@@ -137,7 +148,7 @@ const Map = ({ roommates, view }) => {
   return (
     <div
       style={{ display: "flex" }}
-      className="max-w-[1200px] rounded-[5px] mx-auto px-[20px] mt-[40px] shadow-lg"
+      className={`max-w-[1200px]  mx-auto ${isXLarge &&'px-[20px] rounded-[5px]'} mt-[40px] shadow-lg`}
     >
       <div
         style={{

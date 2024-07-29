@@ -51,7 +51,7 @@ export default function LoginPage() {
   return (
     <>
       <Header />
-      <div className="flex items-center justify-center my-[100px] px-[20px]">
+      <div className={`flex items-center justify-center my-[100px] px-[20px] ${(isMedium ||isSmall) && 'mt-[30px]'}`}>
         <div className="w-full max-w-md bg-[#212B36] rounded-[5px] shadow-lg p-8">
           <h1 className="text-3xl font-semibold text-center text-[white] mb-6">
             Войти

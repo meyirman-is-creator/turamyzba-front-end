@@ -79,7 +79,9 @@ export default function FindRoommateMainPage() {
       />
 
       {loading ? (
-        <div className="max-w-[1200px] p-[20px] pt-[40px] mx-auto grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4">
+        <div
+          className={`max-w-[1200px] p-[20px] pt-[40px] mx-auto  justify-start flex flex-wrap gap-[20px]`}
+        >
           {Array.from({ length: 12 }).map((_, index) => (
             <Skeleton
               key={index}
@@ -90,7 +92,9 @@ export default function FindRoommateMainPage() {
           ))}
         </div>
       ) : view === "list" ? (
-        <div className="max-w-[1200px] p-[20px] pt-[40px] mx-auto grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4">
+        <div
+          className={`max-w-[1200px] p-[20px] pt-[40px] mx-auto  justify-start flex flex-wrap gap-[20px]`}
+        >
           {roommates.length > 0 &&
             roommates.map((roommate) => (
               <RoommateCard key={roommate._id} roommate={roommate} />
