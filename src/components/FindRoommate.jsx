@@ -85,9 +85,9 @@ const RoommateCard = ({ roommate }) => {
     >
       <div className="flex flex-col items-start">
         {roommate.photos?.length > 0 ? (
-          <div className={`${(isMediumRes||isSmall) ? 'w-full py-[20px]':'w-[230px] p-[20px]'}  h-[230px] flex flex-col rounded-[5px] bg-[#D9D9D9]  justify-center items-center flex`}>
+          <div className={`${(isMediumRes||isSmall) ? 'w-full py-[20px]':'w-[230px]'}  h-[230px] flex flex-col rounded-[5px] bg-[#D9D9D9]  justify-center items-center flex`}>
             <img
-              className={` ${(isMediumRes||isSmall) ? 'w-full':'w-[230px]'}  h-[230px] object-cover rounded-[5px]`}
+              className={` w-[230px] ${(isMediumRes||isSmall) ? 'w-full':'w-[230px]'}  h-[230px] object-cover rounded-[5px]`}
               src={roommate.photos[0]}
               alt={``}
             />

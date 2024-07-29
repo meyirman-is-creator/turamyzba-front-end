@@ -94,7 +94,7 @@ export default function AccountPage() {
         <Header />
 
         <div className="mt-[100px] pb-[50px] flex items-center justify-center">
-          <div className="max-w-3xl w-full bg-white rounded-lg shadow-md p-8">
+          <div className="max-w-3xl  w-full bg-white rounded-lg shadow-md p-8">
             <div className="flex flex-col items-center ">
               <Skeleton
                 circle={true}
@@ -148,7 +148,7 @@ export default function AccountPage() {
   return (
     <div className="pb-[50px]">
       <Header />
-      <nav className={`max-w-[1200px] px-[20px] mx-[auto]  mb-[20px] text-[#33FF00] gap-[5px] flex items-end overflow-x-scroll ${isSmall ? 'mt-[20px] text-[10px]' : 'mt-[40px] text-[20px]'}`}>
+      <nav className={`max-w-[1200px] px-[20px] mx-[auto]  mb-[20px] text-[#33FF00] gap-[5px] flex items-end overflow-x-scroll ${isSmall ? 'mt-[20px] text-[15px]' : 'mt-[40px] text-[20px]'}`}>
         <Link to="/" className="text-[#33FF00] hover:underline">
           Главная страница
         </Link>{" "}
@@ -156,20 +156,20 @@ export default function AccountPage() {
       </nav>
 
       {subpage === "profile" && (
-        <div className="max-w-3xl mx-auto bg-[#212B36] rounded-lg shadow-md p-8 px-[20px] mx-[20px] my-8">
+        <div className={`max-w-3xl  my-[40px]  ${(isSmall || isMedium) ? 'mx-[20px] mb-[100px]' : 'mx-[auto]'}  bg-[#212B36] rounded-lg shadow-md p-8 px-[20px]  `}>
           <div className="flex flex-col items-center">
             <div className="w-24 flex items-center justify-center h-24 rounded-full ">
               <img
                 src={userRegIcon}
                 alt="Profile"
-                className="w-[full] h-[full] rounded-full mb-4"
+                className="w-[100px] h-[100px] rounded-full mb-4"
               />
             </div>
 
             <h2 className="text-2xl font-semibold text-white">
               {user?.fullName}
             </h2>
-            <p className="text-gray-500 mb-4 text-white">{user?.email}</p>
+            <p className={`text-gray-500 mb-4 text-white ${(isSmall || isMedium) ? 'text-[12px]' : ''} `}>{user?.email}</p>
             <div className="flex flex-col md:flex-row md:space-x-4 w-full">
               <div className="flex flex-col w-full">
                 <label className="text-left font-semibold text-[white]">Полное имя</label>
