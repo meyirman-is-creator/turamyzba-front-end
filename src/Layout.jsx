@@ -20,7 +20,7 @@ export default function Layout() {
     <div className="relative">
       <Outlet />
       {(isSmall || isMedium) && (
-        <footer className="bg-[#fff] shadow-custom fixed bottom-0 right-0  h-[70px]  flex items-center justify-around px-[20px] w-full">
+        <footer className="bg-[#919EAB] shadow-custom fixed bottom-0 right-0  h-[70px]  flex items-center justify-around px-[20px] w-full">
           <Link
             to={"/"}
             className={`flex flex-col items-center p-[8px] h-[70px] ${

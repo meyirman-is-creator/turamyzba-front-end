@@ -8,7 +8,7 @@ import userIcon from "../photo/userIcon.svg";
 import userRegIcon from "../photo/userRegIcon.svg";
 import useResponsive from "../service/useResponsive";
 export default function Header({
-  setSearchResults,
+  searchResults,
   view,
   setView,
   listIcon,
@@ -29,14 +29,14 @@ export default function Header({
       });
 
       if (response.data && response.data.suitable_announcements) {
-        setSearchResults(response.data.suitable_announcements);
+        searchResults(response.data.suitable_announcements);
       } else {
-        setSearchResults([]);
+        searchResults([]);
       }
       navigate("/");
     } catch (err) {
       console.error("Error fetching search results:", err);
-      setSearchResults([]);
+      searchResults([]);
     }
   };
   const breakpoints = [
@@ -51,7 +51,7 @@ export default function Header({
   const isLarge = activeBreakpoint === "large";
   const isXLarge = activeBreakpoint === "xlarge";
   return (
-    <header className={` bg-[#161C24] shadow-custom ${(isLarge || isMedium || isSmall) &&' pb-[30px]'}`}>
+    <header className={` bg-[#161C24] shadow-custom ${(isLarge || isMedium || isSmall) &&searchResults &&' pb-[30px]'}`}>
       <div className={`max-w-[1200px] px-[20px] mx-[auto] h-[100px] flex items-center justify-between `}>
         <Link
           to="/"
@@ -60,7 +60,7 @@ export default function Header({
           <img src={Logo} alt="" className="max-w-[45px] max-h-[45px]" />
           TURAMYZBA
         </Link>
-        {!isMedium && !isLarge && !isSmall && setSearchResults && (
+        {!isMedium && !isLarge && !isSmall && searchResults && (
           <form onSubmit={handleSearch} className="flex items-center h-[50px]">
             <input
               type="text"
@@ -97,7 +97,7 @@ export default function Header({
               className="h-[30px] w-[30px] rounded-[5px]"
             />
           </Link>
-          {isLarge && (
+          {isLarge &&searchResults && (
             <div className="flex items-center gap-[10px]">
               <button
                 className={`w-[50px] h-[50px] flex items-center justify-center rounded-[5px] ${
@@ -129,7 +129,7 @@ export default function Header({
           )}
         </div>}
       </div>
-      {(isLarge || isMedium || isSmall) && setSearchResults && (
+      {(isLarge || isMedium || isSmall) && searchResults && (
         <form
           onSubmit={handleSearch}
           className="flex items-center h-[50px] w-full px-[20px]"
@@ -150,7 +150,7 @@ export default function Header({
           </button>
         </form>
       )}
-      {!isLarge &&!isMedium &&!isSmall&& setSearchResults && (
+      {!isLarge &&!isMedium &&!isSmall&& searchResults && (
         <div className="bg-[#161C24] ">
           <div className="max-w-[1200px] px-[20px] mx-[auto] h-[100px] flex items-center justify-between">
             {/* <div className="flex items-center gap-[10px]">

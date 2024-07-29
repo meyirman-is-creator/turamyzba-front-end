@@ -3,6 +3,7 @@ import { useContext, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { UserContext } from "../UserContext";
 import Header from "../components/Header";
+import useResponsive from "../service/useResponsive";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -11,7 +12,17 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const { setUser, refreshProfile } = useContext(UserContext);
-
+  const breakpoints = [
+    { name: "small", width: 480 },
+    { name: "medium", width: 768 },
+    { name: "large", width: 1130 },
+    { name: "xlarge", width: Infinity }, // for widths greater than 1024
+  ];
+  const activeBreakpoint = useResponsive(breakpoints);
+  const isSmall = activeBreakpoint === "small";
+  const isMedium = activeBreakpoint === "medium";
+  const isLarge = activeBreakpoint === "large";
+  const isXLarge = activeBreakpoint === "xlarge";
   async function handleLoginSubmit(e) {
     e.preventDefault();
     setLoading(true);
@@ -40,7 +51,7 @@ export default function LoginPage() {
   return (
     <>
       <Header />
-      <div className="flex items-center justify-center mt-[100px]">
+      <div className="flex items-center justify-center my-[100px] px-[20px]">
         <div className="w-full max-w-md bg-[#212B36] rounded-[5px] shadow-lg p-8">
           <h1 className="text-3xl font-semibold text-center text-[white] mb-6">
             Войти
@@ -68,9 +79,7 @@ export default function LoginPage() {
                 className="w-full px-3 py-2 text-black border rounded-[5px] focus:outline-none placeholder:text-[#919EAB]"
               />
             </div>
-            {error && (
-              <p className="mb-4 text-red-500 text-center">{error}</p>
-            )}
+            {error && <p className="mb-4 text-red-500 text-center">{error}</p>}
             <button
               type="submit"
               className="w-full py-2 bg-indigo-500 text-white font-semibold rounded-[5px] hover:bg-indigo-600 focus:outline-none focus:bg-indigo-600"
@@ -79,7 +88,10 @@ export default function LoginPage() {
               {loading ? "Вход..." : "Войти"}
             </button>
             <div className="text-center py-4 text-gray-600">
-              <Link to="/forgot-password" className="text-indigo-500 hover:underline">
+              <Link
+                to="/forgot-password"
+                className="text-indigo-500 hover:underline"
+              >
                 Забыли пароль?
               </Link>
             </div>
