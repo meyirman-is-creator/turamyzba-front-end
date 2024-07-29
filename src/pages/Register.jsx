@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
+import { ClipLoader } from 'react-spinners';
 
 export default function RegisterPage() {
   const [fullName, setFullName] = useState('');
@@ -10,6 +11,7 @@ export default function RegisterPage() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   async function registerUser(e) {
@@ -18,17 +20,20 @@ export default function RegisterPage() {
       setError('Пароли не совпадают');
       return;
     }
+    setLoading(true);
     try {
-      await axios.post('/register', {
+      const response = await axios.post('/register', {
         fullName,
         nickName,
         email,
         password,
       });
-      navigate('/verify-code',  { state: { email, isPasswordReset: false } });
+      navigate('/verify-code', { state: { email, fullName, nickName, password, isPasswordReset: false } });
     } catch (error) {
       console.log(error);
       setError('Ошибка регистрации. Попробуйте еще раз.');
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -36,7 +41,7 @@ export default function RegisterPage() {
     <>
       <Header />
       <div className="flex items-center justify-center mt-[100px]">
-        <div className="w-full max-w-md bg-[#212B36] rounded-[5px]  p-8">
+        <div className="w-full max-w-md bg-[#212B36] rounded-[5px] p-8">
           <h1 className="text-3xl font-semibold text-center text-white mb-6">
             Регистрация
           </h1>
@@ -49,7 +54,7 @@ export default function RegisterPage() {
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 required
-                className="w-full px-3 py-2 text-black border rounded-[5px] focus:outline-none "
+                className="w-full px-3 py-2 text-black border rounded-[5px] focus:outline-none"
               />
             </div>
             <div className="mb-4">
@@ -60,7 +65,7 @@ export default function RegisterPage() {
                 value={nickName}
                 onChange={(e) => setNickName(e.target.value)}
                 required
-                className="w-full px-3 py-2 text-black border rounded-[5px] focus:outline-none "
+                className="w-full px-3 py-2 text-black border rounded-[5px] focus:outline-none"
               />
             </div>
             <div className="mb-4">
@@ -71,7 +76,7 @@ export default function RegisterPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full px-3 py-2 text-black border rounded-[5px] focus:outline-none "
+                className="w-full px-3 py-2 text-black border rounded-[5px] focus:outline-none"
               />
             </div>
             <div className="mb-4">
@@ -82,7 +87,7 @@ export default function RegisterPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full px-3 py-2 text-black border rounded-[5px] focus:outline-none "
+                className="w-full px-3 py-2 text-black border rounded-[5px] focus:outline-none"
               />
             </div>
             <div className="mb-6">
@@ -93,18 +98,24 @@ export default function RegisterPage() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
-                className="w-full px-3 py-2 text-black border rounded-[5px] focus:outline-none "
+                className="w-full px-3 py-2 text-black border rounded-[5px] focus:outline-none"
               />
             </div>
             {error && (
               <p className="mb-4 text-red-500 text-center">{error}</p>
             )}
-            <button
-              type="submit"
-              className="w-full py-2 bg-indigo-500 text-white font-semibold rounded-[5px] hover:bg-indigo-600 focus:outline-none focus:bg-indigo-600"
-            >
-              Зарегистрироваться
-            </button>
+            {loading ? (
+              <div className="flex justify-center">
+                <ClipLoader size={35} color={"#fff"} loading={loading} />
+              </div>
+            ) : (
+              <button
+                type="submit"
+                className="w-full py-2 bg-indigo-500 text-white font-semibold rounded-[5px] hover:bg-indigo-600 focus:outline-none focus:bg-indigo-600"
+              >
+                Зарегистрироваться
+              </button>
+            )}
             <div className="text-center py-4 text-[#919EAB]">
               Уже зарегистрированы?{' '}
               <Link to="/login" className="text-indigo-500 hover:underline">

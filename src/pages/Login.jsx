@@ -9,22 +9,27 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [redirect, setRedirect] = useState(false);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const { setUser, refreshProfile } = useContext(UserContext);
 
   async function handleLoginSubmit(e) {
     e.preventDefault();
+    setLoading(true);
+    setError("");
     try {
       const response = await axios.post("/login", {
         email,
         password,
       });
       localStorage.setItem("accessToken", response.data.accessToken);
+      localStorage.setItem("refreshToken", response.data.refreshToken);
       setUser(response.data.userDoc);
       await refreshProfile();
       setRedirect(true);
     } catch (error) {
-      setError("Неверный email или пароль. Попробуйте снова.");
-      console.log(error);
+      setError(error.response.data);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -69,8 +74,9 @@ export default function LoginPage() {
             <button
               type="submit"
               className="w-full py-2 bg-indigo-500 text-white font-semibold rounded-[5px] hover:bg-indigo-600 focus:outline-none focus:bg-indigo-600"
+              disabled={loading}
             >
-              Войти
+              {loading ? "Вход..." : "Войти"}
             </button>
             <div className="text-center py-4 text-gray-600">
               <Link to="/forgot-password" className="text-indigo-500 hover:underline">

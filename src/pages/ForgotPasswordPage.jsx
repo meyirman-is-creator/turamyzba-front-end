@@ -12,7 +12,7 @@ export default function ForgotPasswordPage() {
   async function handleForgotPasswordSubmit(e) {
     e.preventDefault();
     try {
-      await axios.post('/request-reset-password', { email });
+      await axios.post('/request-reset-password', { email, type: 'passwordReset' });
       setMessage('Код для сброса пароля отправлен на вашу почту.');
       setError('');
       navigate('/verify-code', { state: { email, isPasswordReset: true } });
