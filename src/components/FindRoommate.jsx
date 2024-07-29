@@ -7,6 +7,7 @@ import locationIcon from "../assets/locationIcon.svg";
 import calendarIcon from "../assets/calendarIcon.svg";
 import descriptionIcon from "../assets/descriptionIcon.svg";
 import withoutPhoto from "../photo/withoutPhoto.png";
+import useResponsive from "../service/useResponsive";
 const NextArrow = (props) => {
   const { onClick } = props;
   return (
@@ -64,25 +65,35 @@ const RoommateCard = ({ roommate }) => {
       </div>
     ),
   };
-
+  const breakpoints = [
+    { name: "small", width: 480 },
+    { name: "medium-res", width: 599 },
+    { name: "medium", width: 768 },
+    { name: "large", width: 1130 },
+    { name: "xlarge", width: Infinity }, // for widths greater than 1024
+  ];
+  const activeBreakpoint = useResponsive(breakpoints);
+  const isSmall = activeBreakpoint === "small";
+  const isMediumRes = activeBreakpoint === "medium-res";
+  const isMedium = activeBreakpoint === "medium";
+  const isLarge = activeBreakpoint === "large";
+  const isXLarge = activeBreakpoint === "xlarge";
   return (
     <Link
       to={"/findroommate/" + roommate._id}
-      className="bg-[#212B36] rounded-[5px] w-[270px] h-[700px] p-[20px] shadow-md flex flex-col justify-between"
+      className={`bg-[#212B36] rounded-[5px] ${isMediumRes ? 'w-full h-[auto]':'w-[270px] h-[700px]'}   p-[20px] shadow-md flex flex-col justify-between`}
     >
       <div className="flex flex-col items-start">
         {roommate.photos?.length > 0 ? (
-          <div
-          className="w-[230px] h-[230px] text-center flex justify-center items-center rounded-[5px]"
-        >
-          <img
-            className="w-[230px] h-[230px] object-cover rounded-[5px]"
-            src={roommate.photos[0]}
-            alt={``}
-          />
-        </div>
+          <div className={`${isMediumRes ? 'w-full py-[20px]':'w-[230px] p-[20px]'}  h-[230px] flex flex-col rounded-[5px] bg-[#D9D9D9]  justify-center items-center flex`}>
+            <img
+              className={` ${isMediumRes ? 'w-full':'w-[230px]'}  h-[230px] object-cover rounded-[5px]`}
+              src={roommate.photos[0]}
+              alt={``}
+            />
+          </div>
         ) : (
-          <div className="w-[230px] h-[230px] flex flex-col rounded-[5px] bg-[#D9D9D9] p-[20px] justify-center items-center flex">
+          <div className={`${isMediumRes ? 'w-full':'w-[230px]'}  h-[230px] flex flex-col rounded-[5px] bg-[#D9D9D9] p-[20px] justify-center items-center flex`}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -100,7 +111,9 @@ const RoommateCard = ({ roommate }) => {
           </div>
         )}
         <div className="text-start mt-[10px] ">
-          <p className="text-[10px] text-[#919EAB]">от каждого человека в месяц</p>
+          <p className="text-[10px] text-[#919EAB]">
+            от каждого человека в месяц
+          </p>
           <p className="text-white text-[32px] font-bold">
             {roommate.monthlyExpensePerPerson}тг
           </p>
