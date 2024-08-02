@@ -93,39 +93,40 @@ export default function AccountPage() {
       <>
         <Header />
 
-        <div className="mt-[100px] pb-[50px] flex items-center justify-center">
-          <div className="max-w-3xl  w-full bg-white rounded-lg shadow-md p-8">
+        <div className="my-[100px] pb-[50px] flex items-center justify-center px-[20px]">
+          <div className="max-w-3xl  w-full bg-[#212B36] rounded-lg shadow-md p-8">
             <div className="flex flex-col items-center ">
               <Skeleton
                 circle={true}
                 height={100}
                 width={100}
                 className="mb-4 mx-[auto]"
+                baseColor="#919EAB"
               />
-              <Skeleton height={30} width={200} className="mx-[auto] mb-4" />
-              <Skeleton height={20} width={250} className="mb-4 mx-[auto]" />
+              <Skeleton height={30} width={200} className="mx-[auto] mb-4" baseColor="#919EAB"/>
+              <Skeleton height={20} width={210} className="mb-4 mx-[auto]" baseColor="#919EAB"/>
             </div>
 
             <div className="flex flex-col md:flex-row md:space-x-4 w-full">
-              <Skeleton height={40} width="100%" className="mb-4" />
-              <Skeleton height={40} width="100%" className="mb-4" />
+              <Skeleton height={40} width="100%" className="mb-4" baseColor="#919EAB"/>
+              <Skeleton height={40} width="100%" className="mb-4" baseColor="#919EAB"/>
             </div>
-            <Skeleton height={30} width={200} className="mb-4" />
-            <Skeleton height={40} width="100%" className="mb-4" />
+            <Skeleton height={30} width={200} className="mb-4" baseColor="#919EAB"/>
+            <Skeleton height={40} width="100%" className="mb-4" baseColor="#919EAB" />
             <div className="flex flex-row w-full space-x-4">
-              <Skeleton height={40} width="100%" />
-              <Skeleton height={40} width="100%" />
+              <Skeleton height={40} width="100%" baseColor="#919EAB" />
+              <Skeleton height={40} width="100%" baseColor="#919EAB"/>
             </div>
             <hr className="my-6" />
-            <Skeleton height={30} width={200} className="mb-4" />
+            <Skeleton height={30} width={200} className="mb-4" baseColor="#919EAB"/>
             <div className="flex flex-col md:flex-row md:space-x-4 w-full">
-              <Skeleton height={40} width="100%" className="mb-4" />
-              <Skeleton height={40} width="100%" className="mb-4" />
+              <Skeleton height={40} width="100%" className="mb-4" baseColor="#919EAB"/>
+              <Skeleton height={40} width="100%" className="mb-4" baseColor="#919EAB"/>
             </div>
-            <Skeleton height={40} width="100%" className="mb-4" />
+            <Skeleton height={40} width="100%" className="mb-4" baseColor="#919EAB"/>
             <div className="flex flex-col w-full space-y-4">
-              <Skeleton height={40} width="100%" />
-              <Skeleton height={40} width="100%" />
+              <Skeleton height={40} width="100%" baseColor="#919EAB"/>
+              <Skeleton height={40} width="100%" baseColor="#919EAB"/>
             </div>
           </div>
         </div>

@@ -14,6 +14,8 @@ const Map = ({ roommates, view }) => {
   const markers = useRef([]);
   const [selectedRoommates, setSelectedRoommates] = useState([]);
   const [selectedRoommate, setSelectedRoommate] = useState(null);
+  const [detailsVisible, setDetailsVisible] = useState(false); // State to control the visibility of the details section
+  const [scrollTopVisible, setScrollTopVisible] = useState(false); // State to control the visibility of the Scroll to Top button
   const cluster = useRef(
     new supercluster({
       radius: 60,
@@ -23,33 +25,36 @@ const Map = ({ roommates, view }) => {
 
   const formatPrice = (price) => {
     if (price >= 1000000000) {
-      return (price / 1000000000) + ' млрд ';
+      return price / 1000000000 + " млрд ";
     } else if (price >= 1000000) {
-      return (price / 1000000)+ ' млн ';
+      return price / 1000000 + " млн ";
     } else if (price >= 1000) {
-      return (price / 1000) + ' к ';
+      return price / 1000 + " к ";
     } else {
       return price;
     }
   };
+
   const breakpoints = [
     { name: "small", width: 480 },
     { name: "medium", width: 768 },
     { name: "large", width: 1130 },
-    { name: "xlarge", width: Infinity }, 
+    { name: "xlarge", width: Infinity },
   ];
+
   const activeBreakpoint = useResponsive(breakpoints);
   const isSmall = activeBreakpoint === "small";
   const isMedium = activeBreakpoint === "medium";
   const isLarge = activeBreakpoint === "large";
   const isXLarge = activeBreakpoint === "xlarge";
+
   useEffect(() => {
-    if (map.current || !mapContainer.current) return; 
+    if (map.current || !mapContainer.current) return;
 
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
-      style: "mapbox://styles/mapbox/dark-v10", 
-      center: [76.9285, 43.2567], 
+      style: "mapbox://styles/mapbox/dark-v10",
+      center: [76.9285, 43.2567],
       zoom: 10,
     });
 
@@ -95,14 +100,18 @@ const Map = ({ roommates, view }) => {
             );
             setSelectedRoommates(clusteredRoommates);
             setSelectedRoommate(null);
+            setDetailsVisible(true); // Show the details section
           });
         } else {
           markerElement = document.createElement("div");
           markerElement.className = "point-marker";
-          markerElement.innerHTML = `<div style="background: #7635DC; color: white; padding: 5px 10px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);">${formatPrice(clusterData.properties.price)}₸</div>`;
+          markerElement.innerHTML = `<div style="background: #7635DC; color: white; padding: 5px 10px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);">${formatPrice(
+            clusterData.properties.price
+          )}₸</div>`;
           markerElement.addEventListener("click", () => {
             setSelectedRoommate(clusterData.properties.id);
             setSelectedRoommates([]);
+            setDetailsVisible(true); // Show the details section
           });
         }
 
@@ -145,53 +154,189 @@ const Map = ({ roommates, view }) => {
     }
   }, [view]);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 200) {
+        setScrollTopVisible(true);
+      } else {
+        setScrollTopVisible(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <div
       style={{ display: "flex" }}
-      className={`max-w-[1200px]  mx-auto ${isXLarge &&'px-[20px] rounded-[5px]'} mt-[40px] shadow-lg`}
+      className={`max-w-[1200px] mx-auto ${
+        isXLarge && "px-[20px] rounded-[5px]"
+      } mt-[40px]`}
     >
-      <div
-        style={{
-          maxHeight: "100vh",
-          overflowY: "scroll",
-          width:
-            selectedRoommate ||
-            (selectedRoommates && selectedRoommates.length > 0)
-              ? "300px"
-              : "0px",
-          transition: "width 0.3s ease",
-          paddingRight:
-            selectedRoommate ||
-            (selectedRoommates && selectedRoommates.length > 0)
-              ? "20px"
-              : "0px",
-        }}
-        className={`space-y-[20px] pl-0`}
-      >
-        {selectedRoommates.length > 0 ? (
-          selectedRoommates.map((roommate) => (
-            <RoommateCard key={roommate._id} roommate={roommate} />
-          ))
-        ) : selectedRoommate ? (
-          <RoommateCard
-            roommate={roommates.find((r) => r._id === selectedRoommate)}
-          />
-        ) : null}
-      </div>
+      {isXLarge ? (
+        <div
+          style={{
+            maxHeight: "100vh",
+            overflowY: "scroll",
+            width: detailsVisible ? "300px" : "0px",
+            transition: "width 0.3s ease",
+            paddingRight: detailsVisible ? "20px" : "0px",
+          }}
+          className={`space-y-[20px] pl-0`}
+        >
+          <button
+            onClick={() => setDetailsVisible(false)}
+            style={{
+              display: detailsVisible ? "block" : "none",
+              marginBottom: "20px",
+              padding: "10px",
+              backgroundColor: "#ff0000",
+              color: "#fff",
+              border: "none",
+              borderRadius: "5px",
+              cursor: "pointer",
+            }}
+          >
+            Закрыть
+          </button>
+          {selectedRoommates.length > 0 ? (
+            selectedRoommates.map((roommate) => (
+              <RoommateCard key={roommate._id} roommate={roommate} />
+            ))
+          ) : selectedRoommate ? (
+            <RoommateCard
+              roommate={roommates.find((r) => r._id === selectedRoommate)}
+            />
+          ) : null}
+        </div>
+      ) : (isLarge || isMedium) ? (
+        <div
+          style={{
+            maxHeight: "82vh",
+            overflowY: "scroll",
+            width: detailsVisible ? "310px" : "0px",
+            transition: "width 0.3s ease",
+            paddingRight: detailsVisible ? "20px" : "0px",
+            zIndex: "1",
+          }}
+          className={`space-y-[20px] absolute ${
+            detailsVisible && "p-[20px]"
+          }  bg-[#161C24] rounded-[5px]`}
+        >
+          <button
+            onClick={() => setDetailsVisible(false)}
+            style={{
+              display: detailsVisible ? "block" : "none",
+              marginBottom: "20px",
+              padding: "10px",
+              backgroundColor: "#ff0000",
+              color: "#fff",
+              border: "none",
+              borderRadius: "5px",
+              cursor: "pointer",
+            }}
+          >
+            Закрыть
+          </button>
+          {selectedRoommates.length > 0 ? (
+            selectedRoommates.map((roommate) => (
+              <RoommateCard key={roommate._id} roommate={roommate} />
+            ))
+          ) : selectedRoommate ? (
+            <RoommateCard
+              roommate={roommates.find((r) => r._id === selectedRoommate)}
+            />
+          ) : null}
+        </div>
+      ) : (
+        <div
+          style={{
+            maxHeight: "80vh",
+            overflowY: "scroll",
+            width: detailsVisible ? "310px" : "0px",
+            transition: "width 0.3s ease",
+            paddingRight: detailsVisible ? "20px" : "0px",
+            zIndex: "1",
+          }}
+          className={`space-y-[20px] absolute ${
+            detailsVisible && "p-[20px]"
+          }  bg-[#161C24] rounded-[5px]`}
+        >
+          <button
+            onClick={() => setDetailsVisible(false)}
+            style={{
+              display: detailsVisible ? "block" : "none",
+              marginBottom: "20px",
+              padding: "10px",
+              backgroundColor: "#ff0000",
+              color: "#fff",
+              border: "none",
+              borderRadius: "5px",
+              cursor: "pointer",
+            }}
+          >
+            Закрыть
+          </button>
+          {selectedRoommates.length > 0 ? (
+            selectedRoommates.map((roommate) => (
+              <RoommateCard key={roommate._id} roommate={roommate} />
+            ))
+          ) : selectedRoommate ? (
+            <RoommateCard
+              roommate={roommates.find((r) => r._id === selectedRoommate)}
+            />
+          ) : null}
+        </div>
+      )}
       <div
         ref={mapContainer}
         className="map-container"
         style={{
           height: "100vh",
-          width:
-            selectedRoommate ||
-            (selectedRoommates && selectedRoommates.length > 0)
-              ? "860px"
-              : "100%",
+          width: detailsVisible && isXLarge ? "860px" : "100%",
           transition: "width 0.3s ease",
           borderRadius: "5px",
+          position: "relative", // Set the map container to relative
         }}
-      />
+      >
+        {scrollTopVisible && (
+          <button
+            onClick={scrollToTop}
+            style={{
+              position: "absolute", // Set the button to absolute
+              bottom: "80px",
+              left: "20px",
+              padding: "10px",
+              backgroundColor: "#33FF00",
+              color: "#000",
+              border: "none",
+              borderRadius: "5px",
+              cursor: "pointer",
+              zIndex: 1, // Ensure the button is above the map
+            }}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              className="size-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M8.25 6.75 12 3m0 0 3.75 3.75M12 3v18"
+              />
+            </svg>
+          </button>
+        )}
+      </div>
     </div>
   );
 };

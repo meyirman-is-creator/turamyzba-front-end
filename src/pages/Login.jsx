@@ -16,7 +16,7 @@ export default function LoginPage() {
     { name: "small", width: 480 },
     { name: "medium", width: 768 },
     { name: "large", width: 1130 },
-    { name: "xlarge", width: Infinity }, // for widths greater than 1024
+    { name: "xlarge", width: Infinity }, 
   ];
   const activeBreakpoint = useResponsive(breakpoints);
   const isSmall = activeBreakpoint === "small";

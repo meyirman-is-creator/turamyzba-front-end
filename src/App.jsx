@@ -27,6 +27,7 @@ function App() {
           <Route index element={<FindRoommateMainPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/verify-code" element={<VerifyCodePage />} />
           <Route path="/account" element={<AccountPage />} />
           <Route path="/account/findroommate" element={<PlacesPage />} />
           <Route path="/account/findroommate/new" element={<FindRoommateFormPage />} />
@@ -35,7 +36,6 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/account/aboutroommate" element={<AboutRoommatePage />} />
-          <Route path="/verify-code" element={<VerifyCodePage />} />
         </Route>
       </Routes>
     </UserContextProvider>
