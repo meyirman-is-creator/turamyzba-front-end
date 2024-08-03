@@ -36,6 +36,7 @@ const Map = ({ roommates, view }) => {
   };
 
   const breakpoints = [
+    { name: "sSmall", width: 310 },
     { name: "small", width: 480 },
     { name: "medium", width: 768 },
     { name: "large", width: 1130 },
@@ -44,6 +45,7 @@ const Map = ({ roommates, view }) => {
 
   const activeBreakpoint = useResponsive(breakpoints);
   const isSmall = activeBreakpoint === "small";
+  const isSSmall = activeBreakpoint === "sSmall";
   const isMedium = activeBreakpoint === "medium";
   const isLarge = activeBreakpoint === "large";
   const isXLarge = activeBreakpoint === "xlarge";
@@ -258,7 +260,7 @@ const Map = ({ roommates, view }) => {
           style={{
             maxHeight: "80vh",
             overflowY: "scroll",
-            width: detailsVisible ? "310px" : "0px",
+            width: isSSmall?"100%":(detailsVisible ? "310px" : "0px"),
             transition: "width 0.3s ease",
             paddingRight: detailsVisible ? "20px" : "0px",
             zIndex: "1",
@@ -298,13 +300,12 @@ const Map = ({ roommates, view }) => {
         className="map-container"
         style={{
           height: "100vh",
-          width: detailsVisible && isXLarge ? "860px" : "100%",
+          width: (detailsVisible && isXLarge ? "860px" : "100%"),
           transition: "width 0.3s ease",
           borderRadius: "5px",
           position: "relative", // Set the map container to relative
         }}
       >
-        {scrollTopVisible && (
           <button
             onClick={scrollToTop}
             style={{
@@ -335,7 +336,6 @@ const Map = ({ roommates, view }) => {
               />
             </svg>
           </button>
-        )}
       </div>
     </div>
   );

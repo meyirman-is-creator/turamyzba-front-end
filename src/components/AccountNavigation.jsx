@@ -18,8 +18,8 @@ export default function AccountNavigation() {
     return classes;
   }
   return (
-    <nav className="w-[1200px] px-[20px] mx-[auto] items-center flex justify-between mt-[50px] gap-2 mb-[60px]">
-      <div className="flex items-center gap-[10px]">
+    <nav className="max-w-[1200px] px-[20px] mx-[auto] items-center flex justify-between mt-[50px] gap-2 mb-[60px]">
+      {/* <div className="flex items-center gap-[10px]">
         <Link
           className={linkClasses("aboutroommate")}
           to={"/account/aboutroommate"}
@@ -32,7 +32,7 @@ export default function AccountNavigation() {
         >
           Ищу сожителя
         </Link>
-      </div>
+      </div> */}
       {subpage === "aboutroommate" ? (
         <Link
           to={"/account"}
@@ -57,14 +57,14 @@ export default function AccountNavigation() {
       ) : (
         <Link
           to={"/account/findroommate/new"}
-          className="px-[5px] text-[#33FF00] font-semibold flex items-center gap-[5px]"
+          className="px-[10px] py-[5px] rounded-[5px] text-[#161C24] bg-[#33FF00] font-semibold flex items-center gap-[5px]"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             stroke-width="1.5"
-            stroke="#33FF00"
+            stroke="#161C24"
             class="size-6"
           >
             <path

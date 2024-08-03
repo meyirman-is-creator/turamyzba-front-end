@@ -3,6 +3,7 @@ import AccountNavigation from "../components/AccountNavigation";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Header from "../components/Header";
+import useResponsive from "../service/useResponsive";
 
 export default function PlacesPage() {
   const [places, setPlaces] = useState([]);
@@ -80,38 +81,50 @@ export default function PlacesPage() {
       console.error("Error deleting place:", error);
     }
   };
-
+  const breakpoints = [
+    { name: "small", width: 480 },
+    { name: "small-medium", width: 600 },
+    { name: "medium", width: 768 },
+    { name: "large", width: 1130 },
+    { name: "xlarge", width: Infinity },
+  ];
+  const activeBreakpoint = useResponsive(breakpoints);
+  const isSmall = activeBreakpoint === "small";
+  const isMedium = activeBreakpoint === "medium";
+  const isSmallMedium = activeBreakpoint === "small-medium";
+  const isLarge = activeBreakpoint === "large";
+  const isXLarge = activeBreakpoint === "xlarge";
   return (
-    <div>
+    <div className="pb-[100px]">
       <Header />
       <nav className="max-w-[1200px] px-[20px] mx-[auto] mt-[40px] text-[20px] mb-[20px] text-[#33FF00] gap-[5px] flex items-end ">
         <Link to="/" className="text-[#33FF00] hover:underline">
-          Главная страница
+          Главная {(isLarge|| isMedium||isXLarge)&&'страница'}
         </Link>{" "}
-        /<span className="text-[#919EAB]">Мои объявления</span>
+        /<span className="text-[#919EAB]"> {(isLarge|| isMedium||isXLarge)?'Ваши объявления':'Объявлений'}</span>
       </nav>
       <AccountNavigation />
       <div className="max-w-[1200px] px-[20px] mx-[auto] mt-[30px]">
-        <div className="tabs flex  mt-[30px] mb-[20px] gap-[20px]">
+        <div className={`tabs flex  mt-[30px] mb-[20px]  ${isMedium ?'gap-[15px]':'gap-[20px]'}  `}>
           <button
-            className={`border-b-[1px] border-b-[#161C24] text-[20px] ${
+            className={`border-b-[1px] border-b-[#161C24] ${isMedium ?'text-[15px]':isSmall?'text-[13px]':'text-[20px]'} ${
               activeTab === "active"
                 ? " text-[#33FF00] border-b-[#33FF00]"
                 : "text-[#fff]"
             }`}
             onClick={() => setActiveTab("active")}
           >
-            Активные объявления
+            Активные {(isLarge || isXLarge || isMedium) && 'объявления'} {places.length>0 && places.length}
           </button>
           <button
-            className={`border-b-[1px] border-b-[#161C24] text-[20px] ${
+            className={`border-b-[1px] border-b-[#161C24] ${isMedium ?'text-[15px]':isSmall?'text-[13px]':'text-[20px]'} ${
               activeTab === "archived"
                 ? " text-[#33FF00] border-b-[#33FF00]"
                 : "text-[#fff]"
             }`}
             onClick={() => setActiveTab("archived")}
           >
-            Архивированные объявления
+            Архивированные {(isLarge || isXLarge || isMedium) && 'объявления'}  {archivedPlaces.length>0 &&archivedPlaces.length}
           </button>
         </div>
 
@@ -120,7 +133,7 @@ export default function PlacesPage() {
             {loading ? (
               <div className="flex flex-col gap-[20px] bg-[#212B36] p-[20px] rounded-[5px] mb-4 shadow-lg animate-pulse">
                 <div className="flex justify-between w-full gap-[20px]">
-                  <div className="flex w-[15%] h-[200px] bg-[#919EAB] rounded-[5px]"></div>
+                  <div className="flex w-[15%] min-h-[200px] bg-[#919EAB] rounded-[5px]"></div>
                   <div className="w-[85%]">
                     <div className="h-[30px] bg-[#919EAB] rounded w-2/5"></div>
                     <div className="h-[50px] bg-[#919EAB] rounded w-full mt-[10px]"></div>
@@ -138,11 +151,11 @@ export default function PlacesPage() {
                 >
                   <Link
                     to={`/account/findroommate/${place._id}`}
-                    className="flex w-[full] gap-[20px] h-[200px] rounded-[5px]"
+                    className={`${isSmall?'flex flex-col':"flex"} w-[full] gap-[20px] min-h-[200px] rounded-[5px]`}
                   >
                     {place.photos.length > 0 && (
                       <img
-                        className="object-cover block w-[200px] rounded-[5px] h-[200px]"
+                        className={`object-cover block ${isSmallMedium?'min-w-[150px] h-[150px]':'min-w-[200px] h-[200px]'} rounded-[5px] `}
                         src={place.photos[0]}
                         alt={place.title}
                       />
@@ -209,10 +222,10 @@ export default function PlacesPage() {
                   key={place._id}
                   className="flex flex-col gap-[20px] bg-[#212B36] p-[20px] rounded-[5px] mb-4"
                 >
-                  <div className="flex w-[full] gap-[20px] h-[200px] rounded-[5px]">
+                  <div className={`${isSmall?'flex flex-col':"flex"} w-[full] gap-[20px] min-h-[200px] rounded-[5px]`}>
                     {place.photos.length > 0 && (
                       <img
-                        className="object-cover block w-[200px] rounded-[5px] h-[200px]"
+                        className={`object-cover block ${isSmallMedium?'min-w-[150px] h-[150px]':'min-w-[200px] h-[200px]'} rounded-[5px] `}
                         src={place.photos[0]}
                         alt={place.title}
                       />

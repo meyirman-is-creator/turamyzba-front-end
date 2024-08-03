@@ -10,6 +10,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import nextIcon from "../assets/nextIcon.svg";
 import prevIcon from "../assets/prevIcon.svg";
+import useResponsive from "../service/useResponsive";
 export default function FindRoommateDetailPage() {
   const { id } = useParams();
   const [place, setPlace] = useState(null);
@@ -22,7 +23,21 @@ export default function FindRoommateDetailPage() {
       setPlace(response.data);
     });
   }, [id]);
-
+  const breakpoints = [
+    { name: "sSmall", width: 370 },
+    { name: "small", width: 480 },
+    { name: "medium-res", width: 599 },
+    { name: "medium", width: 768 },
+    { name: "large", width: 1130 },
+    { name: "xlarge", width: Infinity }, // for widths greater than 1130
+  ];
+  const activeBreakpoint = useResponsive(breakpoints);
+  const isSmall = activeBreakpoint === "small";
+  const isMediumRes = activeBreakpoint === "medium-res";
+  const isMedium = activeBreakpoint === "medium";
+  const isLarge = activeBreakpoint === "large";
+  const isXLarge = activeBreakpoint === "xlarge";
+  const isSSmall = activeBreakpoint === "sSmall";
   if (!place) {
     return (
       <>
@@ -83,8 +98,30 @@ export default function FindRoommateDetailPage() {
       slidesToShow: 1,
       slidesToScroll: 1,
       adaptiveHeight: true,
-      nextArrow: <div style={{ background: 'white', borderRadius: '50%' }} className="slick-next w-[35px] h-[35px] bg-white"><img src={nextIcon} className="bg-black w-[35px] h-[35px] rounded-[5px]" alt="Next" /></div>,
-      prevArrow: <div style={{ background: 'black', borderRadius: '50%' }} className="slick-prev"><img src={prevIcon} className="bg-black w-[35px] h-[35px] rounded-[5px]" alt="Prev" /></div>
+      nextArrow: (
+        <div
+          style={{ background: "white", borderRadius: "50%" }}
+          className="slick-next w-[35px] h-[35px] bg-white"
+        >
+          <img
+            src={nextIcon}
+            className="bg-black w-[35px] h-[35px] rounded-[5px]"
+            alt="Next"
+          />
+        </div>
+      ),
+      prevArrow: (
+        <div
+          style={{ background: "black", borderRadius: "50%" }}
+          className="slick-prev"
+        >
+          <img
+            src={prevIcon}
+            className="bg-black w-[35px] h-[35px] rounded-[5px]"
+            alt="Prev"
+          />
+        </div>
+      ),
     };
 
     return (
@@ -116,7 +153,11 @@ export default function FindRoommateDetailPage() {
             {place?.photos?.length > 0 &&
               place.photos.map((photo, index) => (
                 <div key={index}>
-                  <img src={photo} alt="" className="w-auto mx-auto h-[calc(100vh-80px)]" />
+                  <img
+                    src={photo}
+                    alt=""
+                    className="w-auto mx-auto h-[calc(100vh-80px)]"
+                  />
                 </div>
               ))}
           </Slider>
@@ -124,15 +165,26 @@ export default function FindRoommateDetailPage() {
       </div>
     );
   }
-
   return (
     <>
       <Header />
       <nav className="text-[20px] max-w-[1200px] px-[20px] mx-[auto] mt-[40px] mb-[20px] text-[#33FF00] gap-[5px] flex items-end ">
         <Link to="/" className="text-[#33FF00] hover:underline">
-          Главная страница
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="size-10"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M6.75 15.75 3 12m0 0 3.75-3.75M3 12h18"
+            />
+          </svg>
         </Link>
-        /<div className="text-[#919EAB]">Мои объявления</div>
       </nav>
       <div className="max-w-[1200px] px-[20px] mx-[auto] ">
         {place.photos.length > 0 && (

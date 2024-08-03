@@ -10,6 +10,7 @@ import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
 import downIcon from "../assets/downIcon.svg";
 import Regions from "../data/Regions.json";
+import useResponsive from "../service/useResponsive";
 
 export default function FindRoommateFormPage() {
   const { id } = useParams();
@@ -108,7 +109,9 @@ export default function FindRoommateFormPage() {
   }, [maxPeople, selectedGender]);
 
   function inputHeader(text) {
-    return <h2 className="text-[30px] text-white font-bold mb-[10px]">{text}</h2>;
+    return (
+      <h2 className="text-[30px] text-white font-bold mb-[10px]">{text}</h2>
+    );
   }
 
   function inputDescription(text) {
@@ -232,18 +235,44 @@ export default function FindRoommateFormPage() {
   const handleGenderSelection = (gender) => {
     setSelectedGender(gender);
   };
-
+  const breakpoints = [
+    { name: "sSmall", width: 370 },
+    { name: "small", width: 480 },
+    { name: "medium-res", width: 599 },
+    { name: "medium", width: 768 },
+    { name: "large", width: 1130 },
+    { name: "xlarge", width: Infinity }, // for widths greater than 1130
+  ];
+  const activeBreakpoint = useResponsive(breakpoints);
+  const isSmall = activeBreakpoint === "small";
+  const isMediumRes = activeBreakpoint === "medium-res";
+  const isMedium = activeBreakpoint === "medium";
+  const isLarge = activeBreakpoint === "large";
+  const isXLarge = activeBreakpoint === "xlarge";
+  const isSSmall = activeBreakpoint === "sSmall";
   return (
     <div>
       <Header />
-      
-      <div className="max-w-[1200px] px-[20px] mx-auto pb-[50px] mt-[40px]">
-        <nav className="text-[20px] mb-[20px] text-[#33FF00] gap-[5px] flex items-end ">
-          <Link to="/" className="text-[#33FF00] hover:underline">Главная страница</Link> / 
-          <Link to="/account/findroommate" className="text-[#33FF00] hover:underline">Мои объявления</Link> / 
-          <span className="text-[#919EAB]">{id ? " Редактировать объявление" : " Подать объявление"}</span>
-        </nav>
 
+      <div className="max-w-[1200px] px-[20px] mx-auto pb-[50px] mt-[40px]">
+        <nav className={`${isSSmall?'text-[12px]':isSmall?'text-[15px]':'text-[20px]'} mb-[20px] text-[#33FF00] gap-[5px] flex items-end `}>
+          <Link to="/" className="text-[#33FF00] hover:underline">
+            Главная  {isLarge || isXLarge && "страница"}
+          </Link>{" "}
+          /
+          <Link
+            to="/account/findroommate"
+            className="text-[#33FF00] hover:underline"
+          >
+            {(isLarge||isXLarge)?'Ваши объявления':'Объявлений'}
+            
+          </Link>{" "}
+          /
+          <span className="text-[#919EAB]">
+            {id ? " Редактировать" : " Создать"}{(isLarge||isXLarge)&&' объявление'}
+          </span>
+        </nav>
+        
         <h1 className="text-[40px] font-bold mb-[30px] text-white">
           Ищу соседа по комнате
         </h1>
@@ -289,7 +318,8 @@ export default function FindRoommateFormPage() {
                 <div
                   className={`w-[40px] h-[40px] rounded-[5px] flex items-center justify-center ${
                     selectedGender === "female"
-                      ? "bg-[#33FF00]" : "bg-[#919EAB]"
+                      ? "bg-[#33FF00]"
+                      : "bg-[#919EAB]"
                   }`}
                 >
                   {selectedGender === "female" && (
