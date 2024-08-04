@@ -11,6 +11,8 @@ import "slick-carousel/slick/slick-theme.css";
 import nextIcon from "../assets/nextIcon.svg";
 import prevIcon from "../assets/prevIcon.svg";
 import useResponsive from "../service/useResponsive";
+import "./Detail.css";
+
 export default function FindRoommateDetailPage() {
   const { id } = useParams();
   const [place, setPlace] = useState(null);
@@ -23,14 +25,17 @@ export default function FindRoommateDetailPage() {
       setPlace(response.data);
     });
   }, [id]);
+
   const breakpoints = [
     { name: "sSmall", width: 370 },
     { name: "small", width: 480 },
     { name: "medium-res", width: 599 },
     { name: "medium", width: 768 },
-    { name: "large", width: 1130 },
-    { name: "xlarge", width: Infinity }, // for widths greater than 1130
+    { name: "large-medium", width: 1100 },
+    { name: "large", width: 1200 },
+    { name: "xlarge", width: Infinity },
   ];
+
   const activeBreakpoint = useResponsive(breakpoints);
   const isSmall = activeBreakpoint === "small";
   const isMediumRes = activeBreakpoint === "medium-res";
@@ -38,6 +43,8 @@ export default function FindRoommateDetailPage() {
   const isLarge = activeBreakpoint === "large";
   const isXLarge = activeBreakpoint === "xlarge";
   const isSSmall = activeBreakpoint === "sSmall";
+  const isLargeMedium = activeBreakpoint === "large-medium";
+
   if (!place) {
     return (
       <>
@@ -89,9 +96,40 @@ export default function FindRoommateDetailPage() {
       </>
     );
   }
-
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    adaptiveHeight: true,
+    nextArrow: (
+      <div
+        style={{ background: "white", borderRadius: "50%" }}
+        className="slick-next min-w-[35px] min-h-[35px] bg-white "
+      >
+        <img
+          src={nextIcon}
+          className="z-10 bg-black min-w-[45px] min-h-[45px] rounded-[5px] absolute right-[30px] p-[10px]"
+          alt="Next"
+        />
+      </div>
+    ),
+    prevArrow: (
+      <div
+        style={{ background: "black", borderRadius: "50%" }}
+        className="slick-prev"
+      >
+        <img
+          src={prevIcon}
+          className="z-10 bg-black min-w-[45px] min-h-[45px] rounded-[5px] absolute left-[30px] p-[10px]"
+          alt="Prev"
+        />
+      </div>
+    ),
+  };
   if (showAllPhotos) {
-    const settings = {
+    const settingsShow = {
       dots: true,
       infinite: true,
       speed: 500,
@@ -149,7 +187,7 @@ export default function FindRoommateDetailPage() {
               Закрыть фото
             </button>
           </div>
-          <Slider {...settings}>
+          <Slider {...settingsShow}>
             {place?.photos?.length > 0 &&
               place.photos.map((photo, index) => (
                 <div key={index}>
@@ -165,10 +203,11 @@ export default function FindRoommateDetailPage() {
       </div>
     );
   }
+
   return (
     <>
       <Header />
-      <nav className="text-[20px] max-w-[1200px] px-[20px] mx-[auto] mt-[40px] mb-[20px] text-[#33FF00] gap-[5px] flex items-end ">
+      <nav className="nav-text max-w-[1200px] px-[20px] mx-[auto] mt-[40px] mb-[20px] text-[#33FF00] gap-[5px] flex items-end ">
         <Link to="/" className="text-[#33FF00] hover:underline">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -186,45 +225,25 @@ export default function FindRoommateDetailPage() {
           </svg>
         </Link>
       </nav>
-      <div className="max-w-[1200px] px-[20px] mx-[auto] ">
-        {place.photos.length > 0 && (
-          <div className="flex justify-between gap-[20px] relative">
-            <div className="">
-              {place.photos?.[0] ? (
-                <div className="h-[570px] w-[570px] rounded-[5px]">
-                  <img
-                    onClick={() => setShowAllPhotos(true)}
-                    className="aspect-square object-cover cursor-pointer h-full rounded-[5px]"
-                    src={place.photos[0]}
-                    alt=""
-                  />
-                </div>
-              ) : (
-                <div className="h-[570px] w-[570px] bg-[#212B36] rounded-[5px] flex items-center justify-center flex-col  ">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.5"
-                    stroke="currentColor"
-                    className="size-[70px] text-[#919EAB]"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
-                    />
-                  </svg>
-                  <span className="font-bold text-[#919EAB] text-[30px]">
-                    Здесь нет фотографий =(
-                  </span>
-                </div>
-              )}
-            </div>
-            <div className="space-y-[20px]">
-              <div className="flex gap-[20px]">
-                {place.photos?.[1] ? (
-                  <div className="h-[275px] w-[275px] rounded-[5px]">
+      <div
+        className={`max-w-[1200px] px-[20px] mx-[auto] ${
+          isLarge ? "responsive-container" : ""
+        }`}
+      >
+        {isXLarge ? (
+          place.photos.length > 0 && (
+            <div className="flex justify-between gap-[20px] relative ">
+              <div className="responsive-image  w-[570px] w-[570px] rounded-[5px]">
+                <img
+                  onClick={() => setShowAllPhotos(true)}
+                  className="aspect-square object-cover cursor-pointer h-full rounded-[5px]"
+                  src={place.photos[0]}
+                  alt=""
+                />
+              </div>
+              <div className="space-y-[20px]">
+                <div className="flex gap-[20px]">
+                  <div className="responsive-image h-[275px] w-[275px] rounded-[5px]">
                     <img
                       onClick={() => setShowAllPhotos(true)}
                       className="aspect-square object-cover cursor-pointer h-full rounded-[5px]"
@@ -232,11 +251,7 @@ export default function FindRoommateDetailPage() {
                       alt=""
                     />
                   </div>
-                ) : (
-                  <div className="h-[275px] w-[275px] bg-[#212B36] rounded-[5px]"></div>
-                )}
-                {place.photos?.[2] ? (
-                  <div className="h-[275px] w-[275px] rounded-[5px]">
+                  <div className="responsive-image h-[275px] w-[275px] rounded-[5px]">
                     <img
                       onClick={() => setShowAllPhotos(true)}
                       className="aspect-square object-cover cursor-pointer h-full rounded-[5px]"
@@ -244,25 +259,17 @@ export default function FindRoommateDetailPage() {
                       alt=""
                     />
                   </div>
-                ) : (
-                  <div className="h-[275px] w-[275px] bg-[#212B36] rounded-[5px]"></div>
-                )}
-              </div>
-              <div className="flex gap-[20px]">
-                {place.photos?.[3] ? (
-                  <div className="h-[275px] w-[275px] rounded-[5px]">
+                </div>
+                <div className="flex gap-[20px]">
+                  <div className="responsive-image h-[275px] w-[275px]  rounded-[5px]">
                     <img
-                      onClick={() => setShowAllPhotos(true)}
+                      onClick={() => setShowAllPhotos.true}
                       className="aspect-square object-cover cursor-pointer h-full rounded-[5px]"
                       src={place.photos[3]}
                       alt=""
                     />
                   </div>
-                ) : (
-                  <div className="h-[275px] w-[275px] bg-[#212B36] rounded-[5px]"></div>
-                )}
-                {place.photos?.[4] ? (
-                  <div className="h-[275px] w-[275px] rounded-[5px]">
+                  <div className="responsive-image h-[275px] w-[275px] rounded-[5px]">
                     <img
                       onClick={() => setShowAllPhotos(true)}
                       className="aspect-square object-cover cursor-pointer h-full rounded-[5px]"
@@ -270,40 +277,69 @@ export default function FindRoommateDetailPage() {
                       alt=""
                     />
                   </div>
-                ) : (
-                  <div className="h-[275px] w-[275px] bg-[#212B36] rounded-[5px]"></div>
-                )}
+                </div>
               </div>
-            </div>
 
-            {place.photos?.[0] && (
-              <button
-                onClick={() => setShowAllPhotos(true)}
-                className="flex absolute bottom-[20px] right-[0] bg-[#33FF00] rounded-[5px] w-[275px] h-[50px] items-center justify-center border-[1px] border-black text-[20px] font-medium"
-              >
-                Показать больше фото
-              </button>
-            )}
-          </div>
+              {place.photos?.[0] && (
+                <button
+                  onClick={() => setShowAllPhotos(true)}
+                  className="btn-text flex absolute bottom-[20px] right-[0] bg-[#33FF00] rounded-[5px] max-w-[275px] max-h-[50px] w-[100%] h-[100%] items-center justify-center border-[1px] border-black text-[20px] font-medium"
+                >
+                  Показать больше фото
+                </button>
+              )}
+            </div>
+          )
+        ) : (
+          place.photos.length > 0 && (
+            <Slider {...settings}>
+              {place?.photos?.length > 0 &&
+                place.photos.map((photo, index) => (
+                  <div key={index} style={{ zIndex: "-1" }}>
+                    <img
+                      src={photo}
+                      alt=""
+                      className={`${
+                        isMedium
+                          ? "h-[600px]"
+                          : isMediumRes
+                          ? "h-[550px]"
+                          : isSmall
+                          ? "h-[450px]"
+                          : isSSmall
+                          ? "h-[350px]"
+                          : "h-[800px]"
+                      } w-[auto] mx-[auto]`}
+                    />
+                  </div>
+                ))}
+            </Slider>
+          )
         )}
-        <div className="mt-[50px] flex justify-between items-start">
+        <div
+          className={`mt-[50px] ${
+            !(isMedium || isMediumRes || isSmall || isSSmall || isLargeMedium)
+              ? "flex justify-between items-start"
+              : "block"
+          }`}
+        >
           <div className="max-w-[750px]">
             <div className="mb-[20px]">
-              <h3 className="font-bold text-[35px] text-[white]">
+              <h3 className="section-title font-bold text-[white]">
                 {place?.title}
               </h3>
               <a
                 target="_blank"
                 href={"https://maps.google.com/?q=" + place?.address.address}
-                className="flex text-[20px] gap-[10px] text-[#919EAB] font-medium underline"
+                className="flex text-[#919EAB] font-medium underline"
               >
-                <img src={mapIcon} alt="" className="w-[25px] h-[25px]" />
+                <img src={mapIcon} alt="" className="nav-icon" />
                 {place?.address.address}
               </a>
             </div>
             {place?.apartmentInfo && (
               <div className="my-[40px]">
-                <h5 className="font-semibold text-[25px] text-white">
+                <h5 className="section-title font-semibold text-white">
                   Описание квартиры
                 </h5>
                 <p className="text-[15px] font-regular text-[#919EAB]">
@@ -313,7 +349,7 @@ export default function FindRoommateDetailPage() {
             )}
             {place?.ownerInfo && (
               <div className="mb-[40px]">
-                <h5 className="font-semibold text-[25px] text-white ">
+                <h5 className="section-title font-semibold text-white ">
                   Информация о владельце
                 </h5>
                 <p className="text-[15px] font-regular text-[#919EAB]">
@@ -323,7 +359,7 @@ export default function FindRoommateDetailPage() {
             )}
             {place?.roomiePreferences && (
               <div className="mb-[40px]">
-                <h5 className="font-semibold text-[25px] text-white">
+                <h5 className="section-title font-semibold text-white">
                   Предпочтения к сожителю
                 </h5>
                 <p className="text-[15px] text-[#919EAB] font-regular">
@@ -334,13 +370,13 @@ export default function FindRoommateDetailPage() {
           </div>
 
           <div className="w-[380px] p-[20px] pt-[36px] bg-[#212B36] rounded-[5px]">
-            <p className="text-[30px] font-semibold text-[#FFFFFF]">
+            <p className="monthly-expense font-semibold text-[#FFFFFF]">
               {place?.monthlyExpensePerPerson}тг
             </p>
             <div className="h-[1px] w-full bg-[#fff] my-[14px]"></div>
             {place.moveInStart && (
               <div className="mb-[12px] flex items-end gap-[5px]">
-                <span className="text-[20px] font-medium text-white">
+                <span className="section-title font-medium text-white">
                   Старт заселения:
                 </span>
                 <p className="text-[white] font-medium text-[18px]">
@@ -350,7 +386,7 @@ export default function FindRoommateDetailPage() {
             )}
             {place.deposit && (
               <div className="mb-[12px] flex items-end gap-[5px]">
-                <span className="text-[20px] text-white font-medium">
+                <span className="section-title text-white font-medium">
                   Депозит:{" "}
                 </span>
                 <p className="text-[white] font-medium text-[18px]">
@@ -360,7 +396,7 @@ export default function FindRoommateDetailPage() {
             )}
             {place.utilityService && (
               <div className="flex items-end gap-[5px]">
-                <span className="text-[20px] text-white font-medium">
+                <span className="section-title text-white font-medium">
                   Коммунальная услуга:
                 </span>
                 <p className="text-[white] font-medium text-[18px]">
@@ -372,7 +408,7 @@ export default function FindRoommateDetailPage() {
               {place.contactNumber && (
                 <a
                   href={`tel:${place.contactNumber}`}
-                  className="bg-[#33FF00] w-full rounded-[5px] h-[60px] block flex items-center justify-center text-[20px] font-semibold mb-[10px]"
+                  className="bg-[#33FF00] w-full rounded-[5px] h-[60px] block flex items-center justify-center btn-text font-semibold mb-[10px]"
                 >
                   Позвонить
                 </a>
@@ -380,7 +416,7 @@ export default function FindRoommateDetailPage() {
               {place.whatsappNumber && (
                 <a
                   href={`https://wa.me/${place.whatsappNumber}`}
-                  className="bg-[#33FF00] border-[#33FF00] border-[1px] w-full bg-transparent rounded-[5px] h-[60px] block flex items-center justify-center text-[#33FF00] text-[20px] font-semibold mb-[10px]"
+                  className="bg-[#33FF00] border-[#33FF00] border-[1px] w-full bg-transparent rounded-[5px] h-[60px] block flex items-center justify-center text-[#33FF00] btn-text font-semibold mb-[10px]"
                 >
                   Написать
                 </a>

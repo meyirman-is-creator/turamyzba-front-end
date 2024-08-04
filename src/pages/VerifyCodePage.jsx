@@ -25,6 +25,7 @@ export default function VerifyCodePage() {
   const isMedium = activeBreakpoint === "medium";
   const isLarge = activeBreakpoint === "large";
   const isXLarge = activeBreakpoint === "xlarge";
+
   useEffect(() => {
     let interval;
     if (timer > 0) {
@@ -81,7 +82,7 @@ export default function VerifyCodePage() {
         } px-[20px]`}
       >
         <div className="w-full max-w-md bg-[#212B36] rounded-lg  p-8">
-          <h1 className="text-3xl font-semibold text-center text-white mb-6">
+          <h1 className={`text-2xl sm:text-3xl font-semibold text-center text-white mb-6`}>
             Верификация кода
           </h1>
           <form onSubmit={handleVerifyCodeSubmit}>

@@ -6,8 +6,9 @@ import PlacesPage from "./PlacesPage";
 import Header from "../components/Header";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import userRegIcon from '../photo/userRegProfileIcon.svg'
+import userRegIcon from '../photo/userRegProfileIcon.svg';
 import useResponsive from "../service/useResponsive";
+
 export default function AccountPage() {
   const [redirect, setRedirect] = useState(null);
   const { ready, user, setUser } = useContext(UserContext);
@@ -20,17 +21,19 @@ export default function AccountPage() {
   const [editProfile, setEditProfile] = useState(false);
   const [editPassword, setEditPassword] = useState(false);
   let { subpage } = useParams();
+
   const breakpoints = [
     { name: "small", width: 480 },
     { name: "medium", width: 768 },
     { name: "large", width: 1130 },
-    { name: "xlarge", width: Infinity }, // for widths greater than 1024
+    { name: "xlarge", width: Infinity },
   ];
   const activeBreakpoint = useResponsive(breakpoints);
   const isSmall = activeBreakpoint === "small";
   const isMedium = activeBreakpoint === "medium";
   const isLarge = activeBreakpoint === "large";
   const isXLarge = activeBreakpoint === "xlarge";
+
   useEffect(() => {
     if (user) {
       setFullName(user.fullName);
@@ -59,7 +62,7 @@ export default function AccountPage() {
         }
       );
       setEditProfile(false);
-      window.location.reload(); // Перезагрузить страницу
+      window.location.reload();
     } catch (error) {
       console.error("Error updating profile:", error);
     }
@@ -82,7 +85,7 @@ export default function AccountPage() {
         }
       );
       setEditPassword(false);
-      window.location.reload(); // Перезагрузить страницу
+      window.location.reload();
     } catch (error) {
       console.error("Error updating password:", error);
     }
@@ -92,9 +95,8 @@ export default function AccountPage() {
     return (
       <>
         <Header />
-
         <div className="my-[100px] pb-[50px] flex items-center justify-center px-[20px]">
-          <div className="max-w-3xl  w-full bg-[#212B36] rounded-lg shadow-md p-8">
+          <div className="max-w-3xl w-full bg-[#212B36] rounded-lg shadow-md p-8">
             <div className="flex flex-col items-center ">
               <Skeleton
                 circle={true}
@@ -106,7 +108,6 @@ export default function AccountPage() {
               <Skeleton height={30} width={200} className="mx-[auto] mb-4" baseColor="#919EAB"/>
               <Skeleton height={20} width={210} className="mb-4 mx-[auto]" baseColor="#919EAB"/>
             </div>
-
             <div className="flex flex-col md:flex-row md:space-x-4 w-full">
               <Skeleton height={40} width="100%" className="mb-4" baseColor="#919EAB"/>
               <Skeleton height={40} width="100%" className="mb-4" baseColor="#919EAB"/>
@@ -149,28 +150,26 @@ export default function AccountPage() {
   return (
     <div className="pb-[50px]">
       <Header />
-      
       <nav className="max-w-[1200px] px-[20px] mx-[auto] mt-[40px] text-[20px] mb-[20px] text-[#33FF00] gap-[5px] flex items-end ">
         <Link to="/" className="text-[#33FF00] hover:underline">
-          Главная {(isLarge|| isMedium||isXLarge)&&'страница'}
+          Главная {(isLarge || isMedium || isXLarge) && 'страница'}
         </Link>{" "}
-        /<span className="text-[#919EAB]"> {(isLarge|| isMedium||isXLarge)?'Мой профиль':'Профиль'}</span>
+        /<span className="text-[#919EAB]"> {(isLarge || isMedium || isXLarge) ? 'Мой профиль' : 'Профиль'}</span>
       </nav>
       {subpage === "profile" && (
-        <div className={`max-w-3xl  my-[40px]  ${(isSmall || isMedium) ? 'mx-[20px] mb-[100px]' : 'mx-[auto]'}  bg-[#212B36] rounded-lg shadow-md p-8 px-[20px]  `}>
+        <div className={`max-w-3xl my-[40px] ${(isSmall || isMedium) ? 'mx-[20px] mb-[100px]' : 'mx-[auto]'} bg-[#212B36] rounded-lg shadow-md p-8 px-[20px]`}>
           <div className="flex flex-col items-center">
-            <div className="w-24 flex items-center justify-center h-24 rounded-full ">
+            <div className="w-24 flex items-center justify-center h-24 rounded-full">
               <img
                 src={userRegIcon}
                 alt="Profile"
                 className="w-[100px] h-[100px] rounded-full mb-4"
               />
             </div>
-
-            <h2 className="text-2xl font-semibold text-white">
+            <h2 className={`text-xl sm:text-2xl font-semibold text-white`}>
               {user?.fullName}
             </h2>
-            <p className={`text-gray-500 mb-4 text-white ${(isSmall || isMedium) ? 'text-[12px]' : ''} `}>{user?.email}</p>
+            <p className={`text-gray-500 mb-4 text-white ${isSmall ? 'text-[12px]' : ''}`}>{user?.email}</p>
             <div className="flex flex-col md:flex-row md:space-x-4 w-full">
               <div className="flex flex-col w-full">
                 <label className="text-left font-semibold text-[white]">Полное имя</label>
@@ -199,7 +198,7 @@ export default function AccountPage() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className={`p-2 text-black outline-none placeholder:text-[#5D656C] rounded mb-4 w-full  ${editProfile ? 'bg-white' : 'bg-gray-500'}`}
+                className={`p-2 text-black outline-none placeholder:text-[#5D656C] rounded mb-4 w-full ${editProfile ? 'bg-white' : 'bg-gray-500'}`}
                 disabled={!editProfile}
               />
             </div>
@@ -252,9 +251,7 @@ export default function AccountPage() {
                 />
               </div>
               <div className="flex flex-col w-full">
-                <label className="text-left font-semibold text-[white]">
-                  Подтвердите пароль
-                </label>
+                <label className="text-left font-semibold text-[white]">Подтвердите пароль</label>
                 <input
                   type="password"
                   value={confirmPassword}

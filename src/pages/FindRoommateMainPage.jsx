@@ -63,7 +63,7 @@ export default function FindRoommateMainPage() {
     { name: "medium-res", width: 599 },
     { name: "medium", width: 768 },
     { name: "large", width: 1130 },
-    { name: "xlarge", width: Infinity }, // for widths greater than 1130
+    { name: "xlarge", width: Infinity },
   ];
   const activeBreakpoint = useResponsive(breakpoints);
   const isSmall = activeBreakpoint === "small";
@@ -89,7 +89,7 @@ export default function FindRoommateMainPage() {
                 <Skeleton
                   key={index}
                   height={600}
-                  width={window.innerWidth-40}
+                  width={window.innerWidth - 40}
                   baseColor="#212B36"
                 />
               ))

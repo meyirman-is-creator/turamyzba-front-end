@@ -23,6 +23,7 @@ export default function ResetPasswordPage() {
   const isMedium = activeBreakpoint === "medium";
   const isLarge = activeBreakpoint === "large";
   const isXLarge = activeBreakpoint === "xlarge";
+
   console.log(`Email: ${email}, Code: ${code}`); // Проверка передачи данных
 
   async function handleResetPasswordSubmit(e) {
@@ -53,7 +54,7 @@ export default function ResetPasswordPage() {
         } px-[20px]`}
       >
         <div className="w-full max-w-md bg-[#212B36] rounded-[5px] shadow-lg p-8">
-          <h1 className="text-3xl font-semibold text-center text-white mb-6">
+          <h1 className={`text-2xl sm:text-3xl font-semibold text-center text-white mb-6`}>
             Сброс пароля
           </h1>
           <form onSubmit={handleResetPasswordSubmit}>

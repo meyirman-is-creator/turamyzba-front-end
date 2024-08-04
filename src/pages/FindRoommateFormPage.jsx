@@ -110,13 +110,17 @@ export default function FindRoommateFormPage() {
 
   function inputHeader(text) {
     return (
-      <h2 className="text-[30px] text-white font-bold mb-[10px]">{text}</h2>
+      <h2 className="text-[24px] sm:text-[28px] md:text-[30px] text-white font-bold mb-[10px]">
+        {text}
+      </h2>
     );
   }
 
   function inputDescription(text) {
     return (
-      <p className="text-[#919EAB] text-[20px] font-medium mb-[20px]">{text}</p>
+      <p className="text-[#919EAB] text-[16px] sm:text-[18px] md:text-[20px] font-medium mb-[20px]">
+        {text}
+      </p>
     );
   }
 
@@ -235,6 +239,7 @@ export default function FindRoommateFormPage() {
   const handleGenderSelection = (gender) => {
     setSelectedGender(gender);
   };
+
   const breakpoints = [
     { name: "sSmall", width: 370 },
     { name: "small", width: 480 },
@@ -250,38 +255,43 @@ export default function FindRoommateFormPage() {
   const isLarge = activeBreakpoint === "large";
   const isXLarge = activeBreakpoint === "xlarge";
   const isSSmall = activeBreakpoint === "sSmall";
+
   return (
-    <div>
+    <div className="pb-[100px]">
       <Header />
 
       <div className="max-w-[1200px] px-[20px] mx-auto pb-[50px] mt-[40px]">
-        <nav className={`${isSSmall?'text-[12px]':isSmall?'text-[15px]':'text-[20px]'} mb-[20px] text-[#33FF00] gap-[5px] flex items-end `}>
+        <nav
+          className={`${
+            isSSmall ? "text-[12px]" : isSmall ? "text-[15px]" : "text-[20px]"
+          } mb-[20px] text-[#33FF00] gap-[5px] flex items-end`}
+        >
           <Link to="/" className="text-[#33FF00] hover:underline">
-            Главная  {isLarge || isXLarge && "страница"}
+            Главная {isLarge || isXLarge ? "страница" : ""}
           </Link>{" "}
           /
           <Link
             to="/account/findroommate"
             className="text-[#33FF00] hover:underline"
           >
-            {(isLarge||isXLarge)?'Ваши объявления':'Объявлений'}
-            
+            {isLarge || isXLarge ? "Ваши объявления" : "Объявлений"}
           </Link>{" "}
           /
           <span className="text-[#919EAB]">
-            {id ? " Редактировать" : " Создать"}{(isLarge||isXLarge)&&' объявление'}
+            {id ? " Редактировать" : " Создать"}
+            {isLarge || isXLarge ? " объявление" : ""}
           </span>
         </nav>
-        
-        <h1 className="text-[40px] font-bold mb-[30px] text-white">
+
+        <h1 className="text-[28px] sm:text-[32px] md:text-[40px] font-bold mb-[30px] text-white">
           Ищу соседа по комнате
         </h1>
 
         <form onSubmit={saveRoommate}>
-          <div className="w-full bg-[#212B36] rounded-[5px] p-[20px] mb-[20px] ">
+          <div className="w-full bg-[#212B36] rounded-[5px] p-[20px] mb-[20px]">
             {preInput("Кого ищете?*", "Мужчину или женщину?")}
             <div className="flex items-start gap-[50px]">
-              <label className={`cursor-pointer gap-[5px] flex items-center `}>
+              <label className="cursor-pointer gap-[5px] flex items-center">
                 <input
                   type="radio"
                   name="gender"
@@ -303,7 +313,7 @@ export default function FindRoommateFormPage() {
                   )}
                 </div>
               </label>
-              <label className={`cursor-pointer gap-[5px] flex items-center $`}>
+              <label className="cursor-pointer gap-[5px] flex items-center">
                 <input
                   type="radio"
                   name="gender"
@@ -332,20 +342,20 @@ export default function FindRoommateFormPage() {
 
           <div className="w-full bg-[#212B36] rounded-[5px] p-[20px] mb-[20px]">
             {preInput("Сколько людей ищете?*", "")}
-            <div className=" flex items-start gap-[20px]">
+            <div className="flex items-start gap-[20px]">
               <input
                 type="number"
                 placeholder="Количество людей"
                 value={maxPeople}
                 onChange={(e) => setMaxPeople(e.target.value)}
-                className={`w-[80px] h-[40px] text-[30px] font-bold bg-[#919EAB] placeholder:text-[#5D656C] text-black border-[1px] border-[#919EAB] rounded-[5px] text-center ${
+                className={`w-[80px] h-[40px] text-[24px] sm:text-[28px] md:text-[30px] font-bold bg-[#919EAB] placeholder:text-[#5D656C] text-black border-[1px] border-[#919EAB] rounded-[5px] text-center ${
                   maxPeople <= 0 ? "border-[red]" : ""
                 }`}
               />
               <div className="flex items-start gap-[10px]">
                 <button
                   type="button"
-                  className="bg-[#33FF00]  w-[40px] h-[40px] rounded-[5px]  flex items-center justify-center"
+                  className="bg-[#33FF00] w-[40px] h-[40px] rounded-[5px] flex items-center justify-center"
                   onClick={() => setMaxPeople((prev) => prev + 1)}
                 >
                   <img
@@ -356,7 +366,9 @@ export default function FindRoommateFormPage() {
                 </button>
                 <button
                   type="button"
-                  className={`bg-[#33FF00] w-[40px] h-[40px] rounded-[5px]  flex items-center justify-center `}
+                  className={`bg-[#33FF00] w-[40px] h-[40px] rounded-[5px] flex items-center justify-center ${
+                    maxPeople <= 0 ? "disabled:opacity-50" : ""
+                  }`}
                   disabled={maxPeople <= 0}
                   onClick={() => setMaxPeople((prev) => prev - 1)}
                 >
@@ -369,6 +381,7 @@ export default function FindRoommateFormPage() {
               </div>
             </div>
           </div>
+
           <div className="w-full bg-[#212B36] rounded-[5px] p-[20px] mb-[20px]">
             {preInput("Заголовок*", "Краткое описание вашего поиска сожителя.")}
             <input
@@ -376,9 +389,10 @@ export default function FindRoommateFormPage() {
               placeholder={`Например: Ищу соседа в центр города`}
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full bg-[#919EAB] rounded-[5px] placeholder:text-[#5D656C] text-[black] font-medium text-[20px] h-[50px] px-[15px]"
+              className="w-full bg-[#919EAB] rounded-[5px] placeholder:text-[#5D656C] text-[16px] sm:text-[18px] md:text-[20px] text-[black] font-medium h-[50px] px-[15px]"
             />
           </div>
+
           <div className="w-full bg-[#212B36] rounded-[5px] p-[20px] mb-[20px]">
             {preInput("Адрес*", "Введите адрес жилья")}
             <div className="w-[100%] flex justify-between">
@@ -387,7 +401,7 @@ export default function FindRoommateFormPage() {
                   <select
                     value={region}
                     onChange={handleRegionChange}
-                    className={`w-[100%] bg-[#919EAB] border-[#919EAB] rounded-[5px] text-[black] font-medium text-[20px] h-[50px] px-[15px] border-[1px] ${
+                    className={`w-[100%] bg-[#919EAB] border-[#919EAB] rounded-[5px] text-[16px] sm:text-[18px] md:text-[20px] text-[black] font-medium h-[50px] px-[15px] border-[1px] ${
                       showRegionError ? "border-[red]" : ""
                     }`}
                   >
@@ -411,7 +425,7 @@ export default function FindRoommateFormPage() {
                     <select
                       value={district}
                       onChange={handleDistrictChange}
-                      className={`w-[100%] bg-[#919EAB] border-[#919EAB] rounded-[5px]  text-[black] border-[1px] font-medium text-[20px] h-[50px] px-[15px] ${
+                      className={`w-[100%] bg-[#919EAB] border-[#919EAB] rounded-[5px] text-[16px] sm:text-[18px] md:text-[20px] text-[black] font-medium h-[50px] px-[15px] border-[1px] ${
                         showDistrictError ? "border-[red]" : ""
                       }`}
                     >
@@ -437,15 +451,15 @@ export default function FindRoommateFormPage() {
                 placeholder="Адрес"
                 value={address}
                 onClick={() => {
-                  console.log("asdfasd");
                   if (!region) setShowRegionError(true);
                   else if (region && !district) setShowDistrictError(true);
                 }}
                 onChange={(e) => setAddress(e.target.value)}
-                className="w-[50%] bg-[#919EAB] rounded-[5px] border-[#919EAB] text-black font-medium text-[20px] h-[50px] placeholder:text-[#5D656C] px-[15px]"
+                className="w-[50%] bg-[#919EAB] rounded-[5px] border-[#919EAB] text-[16px] sm:text-[18px] md:text-[20px] text-[black] font-medium h-[50px] placeholder:text-[#5D656C] px-[15px]"
               />
             </div>
           </div>
+
           <div className="w-full bg-[#212B36] rounded-[5px] p-[20px] mb-[20px]">
             {preInput("Фотографии*", "Чем больше, тем лучше")}
             <PhotosUploader
@@ -453,6 +467,7 @@ export default function FindRoommateFormPage() {
               addedPhotos={addedPhotos}
             />
           </div>
+
           <div className="w-full bg-[#212B36] rounded-[5px] p-[20px] mb-[20px]">
             {preInput(
               "Дата начала заселения*",
@@ -469,6 +484,7 @@ export default function FindRoommateFormPage() {
               />
             </label>
           </div>
+
           <div className="w-full bg-[#212B36] rounded-[5px] p-[20px] mb-[20px]">
             {preInput("Предпочитаете звонки?*", "")}
             <label className="inline-flex cursor-pointer items-center gap-[15px]">
@@ -476,7 +492,7 @@ export default function FindRoommateFormPage() {
                 type="checkbox"
                 checked={callPreference}
                 onChange={(e) => setCallPreference(e.target.checked)}
-                className="hidden "
+                className="hidden"
               />
               <div
                 className={`w-[40px] h-[40px] rounded-[5px] flex items-center justify-center ${
@@ -485,17 +501,18 @@ export default function FindRoommateFormPage() {
               >
                 {callPreference && <img alt="" src={checkIcon} />}
               </div>
-              <span className=" text-[25px] text-white font-medium">Да</span>
+              <span className="text-[20px] sm:text-[22px] md:text-[25px] text-white font-medium">
+                Да
+              </span>
             </label>
             {callPreference && (
               <>
                 {preInput("", "Ваш контактный номер")}
-
                 <PhoneInput
                   defaultCountry="KZ"
                   placeholder="8 (777) 777 77 77"
                   value={contactNumber}
-                  className="w-full bg-[#919EAB] rounded-[5px] text-[black] placeholder:text-[#5D656C] font-medium text-[20px] h-[50px] px-[15px]"
+                  className="w-full bg-[#919EAB] rounded-[5px] text-[16px] sm:text-[18px] md:text-[20px] text-[black] placeholder:text-[#5D656C] font-medium h-[50px] px-[15px]"
                   onChange={setContactNumber}
                 />
               </>
@@ -504,7 +521,7 @@ export default function FindRoommateFormPage() {
 
           <div className="w-full bg-[#212B36] rounded-[5px] p-[20px] mb-[20px]">
             {preInput("Предпочитаете сообщения в WhatsApp?*", "")}
-            <label className="inline-flex items-center  cursor-pointer gap-[15px]">
+            <label className="inline-flex items-center cursor-pointer gap-[15px]">
               <input
                 type="checkbox"
                 checked={whatsappNumberPreference}
@@ -518,34 +535,37 @@ export default function FindRoommateFormPage() {
               >
                 {whatsappNumberPreference && <img alt="" src={checkIcon} />}
               </div>
-              <span className=" text-[25px] font-medium text-white">Да</span>
+              <span className="text-[20px] sm:text-[22px] md:text-[25px] font-medium text-white">
+                Да
+              </span>
             </label>
             {whatsappNumberPreference && (
               <>
                 {preInput("", "Ваш WhatsApp номер")}
-
                 <PhoneInput
                   defaultCountry="KZ"
                   placeholder="8 (777) 777 77 77"
                   value={whatsappNumber}
-                  className="w-full bg-[#919EAB] rounded-[5px] text-[black] placeholder:text-[#5D656C] font-medium text-[20px] h-[50px] px-[15px]"
+                  className="w-full bg-[#919EAB] rounded-[5px] text-[16px] sm:text-[18px] md:text-[20px] text-[black] placeholder:text-[#5D656C] font-medium h-[50px] px-[15px]"
                   onChange={setWhatsappNumber}
                 />
               </>
             )}
           </div>
+
           <div className="w-full bg-[#212B36] rounded-[5px] p-[20px] mb-[20px]">
             {preInput("Предпочтения к сожителю*", "")}
             <textarea
               ref={textareaRef}
               placeholder="Опишите свои предпочтения к сожителю"
               value={roomiePreferences}
-              className="w-full bg-[#919EAB] rounded-[5px] placeholder:text-[#5D656C] text-[black] font-medium текст-[20px] p-[15px]"
+              className="w-full bg-[#919EAB] rounded-[5px] placeholder:text-[#5D656C] text-[16px] sm:text-[18px] md:text-[20px] text-[black] font-medium p-[15px]"
               style={{ overflow: "hidden", resize: "none" }}
               onChange={handleInputChange}
               onInput={handleInputChange}
             />
           </div>
+
           <div className="w-full bg-[#212B36] rounded-[5px] p-[20px] mb-[20px]">
             {preInput(
               "Ежемесячный платеж за аренду квартиры от каждого человека*",
@@ -556,10 +576,11 @@ export default function FindRoommateFormPage() {
               placeholder="Только цифры укажите"
               value={monthlyExpensePerPerson}
               onChange={(e) => setMonthlyExpensePerPerson(e.target.value)}
-              className="w-full bg-[#919EAB] rounded-[5px] placeholder:text-[#5D656C] text-[black] font-medium text-[20px] h-[50px] px-[15px]"
+              className="w-full bg-[#919EAB] rounded-[5px] placeholder:text-[#5D656C] text-[16px] sm:text-[18px] md:text-[20px] text-[black] font-medium h-[50px] px-[15px]"
             />
           </div>
-          <h3 className="text-[30px] text-white font-medium mb-[30px]">
+
+          <h3 className="text-[20px] sm:text-[24px] md:text-[30px] text-white font-medium mb-[30px]">
             Следующие данные необязательны, но, заполнив их, вы поможете вашему
             будущему соседу по комнате избежать лишних вопросов
           </h3>
@@ -580,22 +601,24 @@ export default function FindRoommateFormPage() {
               >
                 {haveDeposit && <img alt="" src={checkIcon} />}
               </div>
-              <span className=" text-[25px] font-medium text-white">Да</span>
+              <span className="text-[20px] sm:text-[22px] md:text-[25px] font-medium text-white">
+                Да
+              </span>
             </label>
             {haveDeposit && (
               <>
                 {preInput("", "Только цифры пишите")}
-
                 <input
                   type="text"
                   placeholder="Сумма в тенге"
                   value={deposit}
                   onChange={(e) => setDeposit(e.target.value)}
-                  className="w-full bg-[#919EAB] rounded-[5px] placeholder:text-[#5D656C] text-[black] font-medium text-[20px] h-[50px] px-[15px]"
+                  className="w-full bg-[#919EAB] rounded-[5px] placeholder:text-[#5D656C] text-[16px] sm:text-[18px] md:text-[20px] text-[black] font-medium h-[50px] px-[15px]"
                 />
               </>
             )}
           </div>
+
           <div className="w-full bg-[#212B36] rounded-[5px] p-[20px] mb-[20px]">
             {preInput("Есть коммунальные услуги?", "")}
             <label className="inline-flex items-center gap-[15px]">
@@ -612,7 +635,9 @@ export default function FindRoommateFormPage() {
               >
                 {communalServices && <img alt="" src={checkIcon} />}
               </div>
-              <span className=" text-[25px] font-medium text-white">Да</span>
+              <span className="text-[20px] sm:text-[22px] md:text-[25px] font-medium text-white">
+                Да
+              </span>
             </label>
             {communalServices && (
               <>
@@ -622,11 +647,12 @@ export default function FindRoommateFormPage() {
                   placeholder="Сумма в тенге"
                   value={utilityService}
                   onChange={(e) => setUtilityService(e.target.value)}
-                  className="w-full bg-[#919EAB] rounded-[5px] placeholder:text-[#5D656C] text-[black] font-medium text-[20px] h-[50px] px-[15px]"
+                  className="w-full bg-[#919EAB] rounded-[5px] placeholder:text-[#5D656C] text-[16px] sm:text-[18px] md:text-[20px] text-[black] font-medium h-[50px] px-[15px]"
                 />
               </>
             )}
           </div>
+
           <div className="w-full bg-[#212B36] rounded-[5px] p-[20px] mb-[20px]">
             {preInput("Информация о квартире", "Описание квартиры")}
             <textarea
@@ -634,10 +660,11 @@ export default function FindRoommateFormPage() {
               placeholder="Опишите квартиру"
               value={apartmentInfo}
               onChange={handleApartmentInfoChange}
-              className="w-full bg-[#919EAB] rounded-[5px] placeholder:text-[#5D656C] text-[black] font-medium text-[20px] p-[15px]"
+              className="w-full bg-[#919EAB] rounded-[5px] placeholder:text-[#5D656C] text-[16px] sm:text-[18px] md:text-[20px] text-[black] font-medium p-[15px]"
               style={{ overflow: "hidden", resize: "none" }}
             />
           </div>
+
           <div className="w-full bg-[#212B36] rounded-[5px] p-[20px] mb-[20px]">
             {preInput("Информация о вас", "Опишите себя")}
             <textarea
@@ -645,7 +672,7 @@ export default function FindRoommateFormPage() {
               placeholder="Опишите себя"
               value={ownerInfo}
               onChange={handleOwnerInfoChange}
-              className="w-full bg-[#919EAB] rounded-[5px] placeholder:text-[#5D656C] text-[black] font-medium text-[20px] p-[15px]"
+              className="w-full bg-[#919EAB] rounded-[5px] placeholder:text-[#5D656C] text-[16px] sm:text-[18px] md:text-[20px] text-[black] font-medium p-[15px]"
               style={{ overflow: "hidden", resize: "none" }}
             />
           </div>
@@ -653,13 +680,13 @@ export default function FindRoommateFormPage() {
           <div className="flex gap-[30px]">
             <button
               type="submit"
-              className="w-[270px] bg-[#33FF00] rounded-[5px] text-[20px] font-medium h-[50px] text-black"
+              className="w-[270px] bg-[#33FF00] rounded-[5px] text-[16px] sm:text-[18px] md:text-[20px] font-medium h-[50px] text-black"
             >
-              {id ? "Сохранить изменения" : "Подать объявление"}
+              {id ? "Сохранить" : "Создать"}
             </button>
             <Link
               to={"/account/findroommate"}
-              className="w-[270px] flex justify-center items-center bg-transparent border-[white] border-[2px] rounded-[5px] text-[20px] font-medium h-[50px] text-white"
+              className="w-[270px] flex justify-center items-center bg-transparent border-[white] border-[2px] rounded-[5px] text-[16px] sm:text-[18px] md:text-[20px] font-medium h-[50px] text-white"
             >
               Отмена
             </Link>

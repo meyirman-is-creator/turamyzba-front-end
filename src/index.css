@@ -126,3 +126,8 @@ body {
 .slick-dots li button:before{
   color: #919EAB;
 }
+.slick-list{
+  z-index: -1;
+}
+
+

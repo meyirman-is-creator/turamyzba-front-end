@@ -12,17 +12,19 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const { setUser, refreshProfile } = useContext(UserContext);
+  
   const breakpoints = [
     { name: "small", width: 480 },
     { name: "medium", width: 768 },
     { name: "large", width: 1130 },
-    { name: "xlarge", width: Infinity }, 
+    { name: "xlarge", width: Infinity },
   ];
   const activeBreakpoint = useResponsive(breakpoints);
   const isSmall = activeBreakpoint === "small";
   const isMedium = activeBreakpoint === "medium";
   const isLarge = activeBreakpoint === "large";
   const isXLarge = activeBreakpoint === "xlarge";
+
   async function handleLoginSubmit(e) {
     e.preventDefault();
     setLoading(true);
@@ -51,9 +53,9 @@ export default function LoginPage() {
   return (
     <>
       <Header />
-      <div className={`flex items-center justify-center my-[100px] px-[20px] ${(isMedium ||isSmall) && 'mt-[30px]'}`}>
+      <div className={`flex items-center justify-center my-[100px] px-[20px] ${(isMedium || isSmall) && 'mt-[30px]'}`}>
         <div className="w-full max-w-md bg-[#212B36] rounded-[5px] shadow-lg p-8">
-          <h1 className="text-3xl font-semibold text-center text-[white] mb-6">
+          <h1 className={`text-2xl sm:text-3xl font-semibold text-center text-white mb-6`}>
             Войти
           </h1>
           <form onSubmit={handleLoginSubmit}>
