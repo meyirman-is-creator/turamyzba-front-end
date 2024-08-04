@@ -45,8 +45,7 @@ export default function RegisterPage() {
         state: { email, fullName, nickName, password, isPasswordReset: false },
       });
     } catch (error) {
-      console.log(error);
-      setError("Ошибка регистрации. Попробуйте еще раз.");
+      setError(error.response.data.error);
     } finally {
       setLoading(false);
     }

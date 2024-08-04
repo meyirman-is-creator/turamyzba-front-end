@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useContext, useState } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { UserContext } from "../UserContext";
 import Header from "../components/Header";
 import useResponsive from "../service/useResponsive";
@@ -9,10 +9,12 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [redirect, setRedirect] = useState(false);
+  const [redirectToVerify, setRedirectToVerify] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const { setUser, refreshProfile } = useContext(UserContext);
-  
+  const navigate = useNavigate();
+
   const breakpoints = [
     { name: "small", width: 480 },
     { name: "medium", width: 768 },
@@ -35,12 +37,15 @@ export default function LoginPage() {
         password,
       });
       localStorage.setItem("accessToken", response.data.accessToken);
-      localStorage.setItem("refreshToken", response.data.refreshToken);
       setUser(response.data.userDoc);
       await refreshProfile();
       setRedirect(true);
     } catch (error) {
-      setError(error.response.data);
+      if (error.response.status === 403) {
+        setRedirectToVerify(true);
+      } else {
+        setError(error.response.data);
+      }
     } finally {
       setLoading(false);
     }
@@ -48,6 +53,10 @@ export default function LoginPage() {
 
   if (redirect) {
     return <Navigate to={"/"} />;
+  }
+
+  if (redirectToVerify) {
+    return <Navigate to="/verify-code" state={{ email, isPasswordReset: false }} />;
   }
 
   return (

@@ -98,10 +98,10 @@ export default function PlacesPage() {
     <div className="pb-[100px]">
       <Header />
       <nav className="max-w-[1200px] px-[20px] mx-[auto] mt-[40px] text-[20px] mb-[20px] text-[#33FF00] gap-[5px] flex items-end ">
-        <Link to="/" className="text-[#33FF00] hover:underline">
+        <Link to="/" className="text-[#33FF00] text-[20px] hover:underline">
           Главная {(isLarge || isMedium || isXLarge) && "страница"}
         </Link>{" "}
-        /<span className="text-[#919EAB]"> {(isLarge || isMedium || isXLarge) ? "Ваши объявления" : "Объявлений"}</span>
+        /<span className="text-[#919EAB]  text-[20px]"> {(isLarge || isMedium || isXLarge) ? "Ваши объявления" : "Объявлений"}</span>
       </nav>
       <AccountNavigation />
       <div className="max-w-[1200px] px-[20px] mx-[auto] mt-[30px]">

@@ -151,10 +151,10 @@ export default function AccountPage() {
     <div className="pb-[50px]">
       <Header />
       <nav className="max-w-[1200px] px-[20px] mx-[auto] mt-[40px] text-[20px] mb-[20px] text-[#33FF00] gap-[5px] flex items-end ">
-        <Link to="/" className="text-[#33FF00] hover:underline">
+        <Link to="/" className="text-[#33FF00] hover:underline  text-[20px]">
           Главная {(isLarge || isMedium || isXLarge) && 'страница'}
         </Link>{" "}
-        /<span className="text-[#919EAB]"> {(isLarge || isMedium || isXLarge) ? 'Мой профиль' : 'Профиль'}</span>
+        /<span className="text-[#919EAB] text-[20px]"> {(isLarge || isMedium || isXLarge) ? 'Мой профиль' : 'Профиль'}</span>
       </nav>
       {subpage === "profile" && (
         <div className={`max-w-3xl my-[40px] ${(isSmall || isMedium) ? 'mx-[20px] mb-[100px]' : 'mx-[auto]'} bg-[#212B36] rounded-lg shadow-md p-8 px-[20px]`}>

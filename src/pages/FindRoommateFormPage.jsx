@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import PhotosUploader from "../PhotosUploads";
 import AccountNavigation from "../components/AccountNavigation";
-import { Link, Navigate, useParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Header from "../components/Header";
 import checkIcon from "../assets/checkIcon.svg";
@@ -38,12 +38,19 @@ export default function FindRoommateFormPage() {
   const [redirect, setRedirect] = useState(false);
   const [selectedGender, setSelectedGender] = useState("female");
   const [communalServices, setCommunalServices] = useState(false);
+  const [coordinates, setCoordinates] = useState([76.9242, 43.2565]); // Default coordinates for Almaty
 
   const [showRegionError, setShowRegionError] = useState(false);
   const [showDistrictError, setShowDistrictError] = useState(false);
 
   const apartmentInfoRef = useRef(null);
   const ownerInfoRef = useRef(null);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (redirect) {
+      navigate('/account/findroommate');
+    }
+  }, [redirect]);
 
   useEffect(() => {
     if (!id) {
@@ -82,6 +89,7 @@ export default function FindRoommateFormPage() {
         setAddedPhotos(data.photos);
         setSelectedGender(data.selectedGender);
         setCommunalServices(data.communalServices);
+        setCoordinates(data.coordinates || [76.9242, 43.2565]); // Default to saved coordinates
       })
       .catch((error) => {
         console.error("Error fetching roommate details:", error);
@@ -209,6 +217,7 @@ export default function FindRoommateFormPage() {
       whatsappNumberPreference,
       selectedGender,
       communalServices,
+      coordinates, // Save the coordinates
     };
     const accessToken = localStorage.getItem("accessToken");
 
@@ -230,10 +239,6 @@ export default function FindRoommateFormPage() {
     } catch (error) {
       console.error("Error saving roommate:", error);
     }
-  }
-
-  if (redirect) {
-    return <Navigate to="/account/findroommate" />;
   }
 
   const handleGenderSelection = (gender) => {
@@ -262,22 +267,20 @@ export default function FindRoommateFormPage() {
 
       <div className="max-w-[1200px] px-[20px] mx-auto pb-[50px] mt-[40px]">
         <nav
-          className={`${
-            isSSmall ? "text-[12px]" : isSmall ? "text-[15px]" : "text-[20px]"
-          } mb-[20px] text-[#33FF00] gap-[5px] flex items-end`}
+          className={`text-[20px] mb-[20px]  text-[#33FF00] gap-[5px] flex items-end`}
         >
-          <Link to="/" className="text-[#33FF00] hover:underline">
+          <Link to="/" className="text-[#33FF00] hover:underline  text-[20px]">
             Главная {isLarge || isXLarge ? "страница" : ""}
           </Link>{" "}
           /
           <Link
             to="/account/findroommate"
-            className="text-[#33FF00] hover:underline"
+            className="text-[#33FF00] hover:underline  text-[20px]"
           >
             {isLarge || isXLarge ? "Ваши объявления" : "Объявлений"}
           </Link>{" "}
           /
-          <span className="text-[#919EAB]">
+          <span className="text-[#919EAB]  text-[20px]">
             {id ? " Редактировать" : " Создать"}
             {isLarge || isXLarge ? " объявление" : ""}
           </span>
@@ -392,7 +395,6 @@ export default function FindRoommateFormPage() {
               className="w-full bg-[#919EAB] rounded-[5px] placeholder:text-[#5D656C] text-[16px] sm:text-[18px] md:text-[20px] text-[black] font-medium h-[50px] px-[15px]"
             />
           </div>
-
           <div className="w-full bg-[#212B36] rounded-[5px] p-[20px] mb-[20px]">
             {preInput("Адрес*", "Введите адрес жилья")}
             <div className="w-[100%] flex justify-between">
@@ -459,7 +461,6 @@ export default function FindRoommateFormPage() {
               />
             </div>
           </div>
-
           <div className="w-full bg-[#212B36] rounded-[5px] p-[20px] mb-[20px]">
             {preInput("Фотографии*", "Чем больше, тем лучше")}
             <PhotosUploader

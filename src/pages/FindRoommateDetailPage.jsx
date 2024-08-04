@@ -49,22 +49,22 @@ export default function FindRoommateDetailPage() {
     return (
       <>
         <Header />
-        <div className="max-w-[1200px] px-[20px] pt-[90px] mx-[auto]">
-          <div className="flex justify-between gap-[20px] relative">
-            <Skeleton height={570} width={570} baseColor="#212B36" />
-            <div className="space-y-[20px]">
-              <div className="flex space-x-[20px]">
-                <Skeleton height={275} width={275} baseColor="#212B36" />
-                <Skeleton height={275} width={275} baseColor="#212B36" />
+        <div className="max-w-[1200px] px-[20px] pt-[90px] mx-auto">
+          <div className="flex flex-col lg:flex-row justify-between gap-[20px] relative">
+            <Skeleton className="w-full lg:w-[570px] h-[570px]" baseColor="#212B36" />
+            <div className="space-y-[20px] w-full lg:w-auto">
+              <div className="flex flex-col md:flex-row gap-[20px]">
+                <Skeleton className="w-full md:w-[275px] h-[275px]" baseColor="#212B36" />
+                <Skeleton className="w-full md:w-[275px] h-[275px]" baseColor="#212B36" />
               </div>
-              <div className="flex space-x-[20px]">
-                <Skeleton height={275} width={275} baseColor="#212B36" />
-                <Skeleton height={275} width={275} baseColor="#212B36" />
+              <div className="flex flex-col md:flex-row gap-[20px]">
+                <Skeleton className="w-full md:w-[275px] h-[275px]" baseColor="#212B36" />
+                <Skeleton className="w-full md:w-[275px] h-[275px]" baseColor="#212B36" />
               </div>
             </div>
           </div>
-          <div className="mt-[50px] flex justify-between items-start">
-            <div className="max-w-[750px] ">
+          <div className="mt-[50px] flex flex-col lg:flex-row justify-between items-start">
+            <div className="max-w-[750px] w-full">
               <Skeleton height={40} width={"100%"} />
               <Skeleton height={20} width={"100%"} />
               <div className="my-[40px]">
@@ -80,15 +80,15 @@ export default function FindRoommateDetailPage() {
                 <Skeleton height={20} width={"100%"} count={3} />
               </div>
             </div>
-            <div className="w-[380px] p-[20px] pt-[36px] bg-[#212B36] rounded-[5px]">
-              <Skeleton height={30} width={"100%"} baseColor="#405369" />
-              <Skeleton height={1} width={"100%"} baseColor="#405369" />
-              <Skeleton height={20} width={"100%"} baseColor="#405369" />
-              <Skeleton height={20} width={"100%"} baseColor="#405369" />
-              <Skeleton height={20} width={"100%"} baseColor="#405369" />
+            <div className="w-full lg:w-[380px] p-[20px] pt-[36px] bg-[#212B36] rounded-[5px]">
+              <Skeleton height={30} width={"100%"} baseColor="#212B36" />
+              <Skeleton height={1} width={"100%"} baseColor="#212B36" />
+              <Skeleton height={20} width={"100%"} baseColor="#212B36" />
+              <Skeleton height={20} width={"100%"} baseColor="#212B36" />
+              <Skeleton height={20} width={"100%"} baseColor="#212B36" />
               <div className="mt-[80px] w-full">
-                <Skeleton height={60} width={"100%"} baseColor="#405369" />
-                <Skeleton height={60} width={"100%"} baseColor="#405369" />
+                <Skeleton height={60} width={"100%"} baseColor="#212B36" />
+                <Skeleton height={60} width={"100%"} baseColor="#212B36" />
               </div>
             </div>
           </div>
@@ -155,7 +155,7 @@ export default function FindRoommateDetailPage() {
         >
           <img
             src={prevIcon}
-            className="bg-black w-[35px] h-[35px] rounded-[5px]"
+            className="bg-black w-[35px] h-[35px]"
             alt="Prev"
           />
         </div>
@@ -207,7 +207,7 @@ export default function FindRoommateDetailPage() {
   return (
     <div className="pb-[100px]">
       <Header />
-      <nav className="nav-text max-w-[1200px] px-[20px] mx-[auto] mt-[40px] mb-[20px] text-[#33FF00] gap-[5px] flex items-end ">
+      <nav className="nav-text max-w-[1200px] px-[20px] mx-auto mt-[40px] mb-[20px] text-[#33FF00] gap-[5px] flex items-end ">
         <Link to="/" className="text-[#33FF00] hover:underline">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -226,7 +226,7 @@ export default function FindRoommateDetailPage() {
         </Link>
       </nav>
       <div
-        className={`max-w-[1200px] px-[20px] mx-[auto] ${
+        className={`max-w-[1200px] px-[20px] mx-auto ${
           isLarge ? "responsive-container" : ""
         }`}
       >
@@ -278,16 +278,16 @@ export default function FindRoommateDetailPage() {
                       />
                     </div>
                   </div>
-                </div>
 
-                {place.photos?.[0] && (
-                  <button
-                    onClick={() => setShowAllPhotos(true)}
-                    className="btn-text flex absolute bottom-[20px] right-[0] bg-[#33FF00] rounded-[5px] max-w-[275px] max-h-[50px] w-[100%] h-[100%] items-center justify-center border-[1px] border-black text-[20px] font-medium"
-                  >
-                    Показать больше фото
-                  </button>
-                )}
+                  {place.photos?.[0] && (
+                    <button
+                      onClick={() => setShowAllPhotos(true)}
+                      className="btn-text flex absolute bottom-[20px] right-[0] bg-[#33FF00] rounded-[5px] max-w-[275px] max-h-[50px] w-[100%] h-[100%] items-center justify-center border-[1px] border-black text-[20px] font-medium"
+                    >
+                      Показать больше фото
+                    </button>
+                  )}
+                </div>
               </div>
             )
           : place.photos.length > 0 && (
@@ -308,7 +308,7 @@ export default function FindRoommateDetailPage() {
                             : isSSmall
                             ? "h-[350px]"
                             : "h-[800px]"
-                        } w-[auto] mx-[auto]`}
+                        } w-[auto] mx-auto`}
                       />
                     </div>
                   ))}

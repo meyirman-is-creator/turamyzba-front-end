@@ -8,12 +8,12 @@ export default function VerifyCodePage() {
   const [code, setCode] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-  const [timer, setTimer] = useState(120); // 2 minutes
-  const [resendEnabled, setResendEnabled] = useState(false);
+  const [resendCode, setResendCode] = useState(null); // To store the new verification code
+  const [timer, setTimer] = useState(60); // 1 minute
+  const [resendEnabled, setResendEnabled] = useState(false); // Control resend button state
   const navigate = useNavigate();
   const location = useLocation();
-  const { email, fullName, nickName, password, isPasswordReset } =
-    location.state || {};
+  const { email, isPasswordReset } = location.state || {};
   const breakpoints = [
     { name: "small", width: 480 },
     { name: "medium", width: 768 },
@@ -50,7 +50,8 @@ export default function VerifyCodePage() {
         navigate("/reset-password", { state: { email, code } });
       } else {
         setMessage("Код подтвержден.");
-        navigate("/");
+        localStorage.setItem("accessToken", response.data.accessToken);
+        navigate('/');
         window.location.reload();
       }
     } catch (error) {
@@ -61,13 +62,14 @@ export default function VerifyCodePage() {
 
   async function handleResendCode() {
     try {
-      await axios.post("/request-reset-password", {
+      const response = await axios.post("/request-reset-password", {
         email,
         type: isPasswordReset ? "passwordReset" : "register",
       });
       setMessage("Код для подтверждения отправлен повторно.");
-      setTimer(120); // reset timer to 2 minutes
-      setResendEnabled(false);
+      setResendCode(response.data.verificationCode); // Store the new verification code
+      setTimer(60); // Reset timer to 1 minute
+      setResendEnabled(false); // Disable resend button
     } catch (error) {
       setError("Ошибка при повторной отправке кода.");
     }
@@ -83,7 +85,7 @@ export default function VerifyCodePage() {
       >
         <div className="w-full max-w-md bg-[#212B36] rounded-lg  p-8">
           <h1 className={`text-2xl sm:text-3xl font-semibold text-center text-white mb-6`}>
-            Верификация кода
+          Подтвердите почту
           </h1>
           <form onSubmit={handleVerifyCodeSubmit}>
             <div className="mb-4 text-center">
@@ -111,7 +113,7 @@ export default function VerifyCodePage() {
           <div className="text-center mt-4 text-gray-600">
             {timer > 0 ? (
               <p>
-                Код истекает через {Math.floor(timer / 60)}:
+                Код можно обратно отправить через {Math.floor(timer / 60)}:
                 {("0" + (timer % 60)).slice(-2)}
               </p>
             ) : (

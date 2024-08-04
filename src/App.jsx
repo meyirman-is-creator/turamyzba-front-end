@@ -15,8 +15,8 @@ import ResetPasswordPage from "./pages/ResetPasswordPage";
 import AboutRoommatePage from "./pages/AboutRoommatePage";
 import VerifyCodePage from "./pages/VerifyCodePage";
 
-axios.defaults.baseURL = "https://turamyzba-back-end-production.up.railway.app";
-// axios.defaults.baseURL = "http://localhost:4000";
+// axios.defaults.baseURL = "https://turamyzba-back-end-production.up.railway.app";
+axios.defaults.baseURL = "http://localhost:4000";
 axios.defaults.withCredentials = true;
 
 function App() {
