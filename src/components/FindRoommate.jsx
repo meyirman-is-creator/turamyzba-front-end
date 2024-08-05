@@ -81,7 +81,7 @@ const RoommateCard = ({ roommate }) => {
   return (
     <Link
       to={"/findroommate/" + roommate._id}
-      className={`bg-[#212B36] rounded-[5px] ${(isMediumRes||isSmall) ? 'w-full h-[auto]':'w-[270px] h-[700px]'}   p-[20px] shadow-md flex flex-col justify-between`}
+      className={`bg-[#212B36] rounded-[5px] ${(isMediumRes||isSmall) ? 'w-full h-[auto]':'w-[270px] h-[auto]'}   p-[20px] shadow-md flex flex-col justify-between`}
     >
       <div className="flex flex-col items-start">
         {roommate.photos?.length > 0 ? (
