@@ -127,7 +127,9 @@ body {
   color: #919EAB;
 }
 .slick-list{
-  z-index: -1;
+  z-index: 0;
 }
-
+.slick-arrow{
+  z-index: 10;
+}
 

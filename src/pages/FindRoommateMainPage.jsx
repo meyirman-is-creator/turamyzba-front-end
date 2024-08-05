@@ -80,6 +80,7 @@ export default function FindRoommateMainPage() {
         view={view}
         mapIcon={mapIcon}
         listIcon={listIcon}
+        setRoommates={setRoommates}
       />
 
       {loading ? (
@@ -120,9 +121,7 @@ export default function FindRoommateMainPage() {
       {!isLarge && !isXLarge && (
         <button
           className="fixed bottom-[80px] bg-[#33FF00] right-[10px] px-[10px] h-[50px] rounded-[5px]"
-          onClick={() =>
-            setView((view) => (view === "map" ? "list" : "map"))
-          }
+          onClick={() => setView((view) => (view === "map" ? "list" : "map"))}
         >
           {view !== "map" ? (
             <span className="flex items-center justify-center gap-[5px]">

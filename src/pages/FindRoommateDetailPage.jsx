@@ -51,15 +51,30 @@ export default function FindRoommateDetailPage() {
         <Header />
         <div className="max-w-[1200px] px-[20px] pt-[90px] mx-auto">
           <div className="flex flex-col lg:flex-row justify-between gap-[20px] relative">
-            <Skeleton className="w-full lg:w-[570px] h-[570px]" baseColor="#212B36" />
+            <Skeleton
+              className="w-full lg:w-[570px] h-[570px]"
+              baseColor="#212B36"
+            />
             <div className="space-y-[20px] w-full lg:w-auto">
               <div className="flex flex-col md:flex-row gap-[20px]">
-                <Skeleton className="w-full md:w-[275px] h-[275px]" baseColor="#212B36" />
-                <Skeleton className="w-full md:w-[275px] h-[275px]" baseColor="#212B36" />
+                <Skeleton
+                  className="w-full md:w-[275px] h-[275px]"
+                  baseColor="#212B36"
+                />
+                <Skeleton
+                  className="w-full md:w-[275px] h-[275px]"
+                  baseColor="#212B36"
+                />
               </div>
               <div className="flex flex-col md:flex-row gap-[20px]">
-                <Skeleton className="w-full md:w-[275px] h-[275px]" baseColor="#212B36" />
-                <Skeleton className="w-full md:w-[275px] h-[275px]" baseColor="#212B36" />
+                <Skeleton
+                  className="w-full md:w-[275px] h-[275px]"
+                  baseColor="#212B36"
+                />
+                <Skeleton
+                  className="w-full md:w-[275px] h-[275px]"
+                  baseColor="#212B36"
+                />
               </div>
             </div>
           </div>
@@ -96,6 +111,7 @@ export default function FindRoommateDetailPage() {
       </>
     );
   }
+
   const settings = {
     dots: true,
     infinite: true,
@@ -128,40 +144,37 @@ export default function FindRoommateDetailPage() {
       </div>
     ),
   };
-  if (showAllPhotos) {
-    const settingsShow = {
-      dots: true,
-      infinite: true,
-      speed: 500,
-      slidesToShow: 1,
-      slidesToScroll: 1,
-      adaptiveHeight: true,
-      nextArrow: (
-        <div
-          style={{ background: "white", borderRadius: "50%" }}
-          className="slick-next w-[35px] h-[35px] bg-white"
-        >
-          <img
-            src={nextIcon}
-            className="bg-black w-[35px] h-[35px] rounded-[5px]"
-            alt="Next"
-          />
-        </div>
-      ),
-      prevArrow: (
-        <div
-          style={{ background: "black", borderRadius: "50%" }}
-          className="slick-prev"
-        >
-          <img
-            src={prevIcon}
-            className="bg-black w-[35px] h-[35px]"
-            alt="Prev"
-          />
-        </div>
-      ),
-    };
 
+  const settingsShow = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    adaptiveHeight: true,
+    nextArrow: (
+      <div
+        style={{ background: "white", borderRadius: "50%" }}
+        className="slick-next w-[35px] h-[35px] bg-white"
+      >
+        <img
+          src={nextIcon}
+          className="bg-black w-[35px] h-[35px] rounded-[5px]"
+          alt="Next"
+        />
+      </div>
+    ),
+    prevArrow: (
+      <div
+        style={{ background: "black", borderRadius: "50%" }}
+        className="slick-prev"
+      >
+        <img src={prevIcon} className="bg-black w-[35px] h-[35px]" alt="Prev" />
+      </div>
+    ),
+  };
+
+  if (showAllPhotos) {
     return (
       <div className="absolute inset-0 bg-black text-white w-full h-full">
         <div className="p-8 bg-[#161C24]">
